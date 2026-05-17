@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>minicabs.co.uk - Reimagined Figma System & Prototype</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for beautiful modern icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Modern Pro Sans-Serif Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#0a2353',      // Deeper Midnight Uber-style Blue
+                            blueLight: '#0f398a', // Secondary vibrant royal blue
+                            green: '#76bc21',     // Logo bright accent green
+                            greenDark: '#5c9617',  // Logo darker contrast green
+                            neutralbg: '#fcfcfd',  // Clean, crisp high-end neutral background
+                            card: '#ffffff'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+        /* Custom scrollbar to look like Figma */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+        
+        /* Figma Checkerboard Grid Background */
+        .figma-canvas {
+            background-color: #12151c;
+            background-image: radial-gradient(#1e2433 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Glassmorphism utility */
+        .glass {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Simulated mobile device shadow and screen fit */
+        .phone-mockup {
+            box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.7), 0 0 50px rgba(118, 188, 33, 0.08);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Figma Header Workspace Bar -->
+    <header class="border-b border-gray-800 bg-[#14151a] px-4 py-2 flex items-center justify-between text-xs select-none">
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-1.5">
+                <span class="text-brand-green font-extrabold text-sm tracking-tight">minicabs<span class="text-white">.co.uk</span></span>
+                <span class="bg-gray-800/80 text-gray-400 px-2 py-0.5 rounded text-[10px] ml-2 font-mono uppercase tracking-tight">Figma Pro UX v3.0</span>
+            </div>
+            <div class="h-4 w-[1px] bg-gray-800"></div>
+            <div class="hidden md:flex items-center space-x-3 text-gray-400">
+                <span class="hover:text-white cursor-pointer transition"><i class="fa-solid fa-bars mr-1"></i> File</span>
+                <span class="hover:text-white cursor-pointer transition">Edit</span>
+                <span class="hover:text-white cursor-pointer transition">View</span>
+                <span class="hover:text-white cursor-pointer transition text-brand-green font-medium"><i class="fa-solid fa-circle-nodes mr-1"></i> Interactive Flow</span>
+            </div>
+        </div>
+        
+        <!-- Figma Tool Center -->
+        <div class="hidden lg:flex items-center space-x-1.5 bg-[#1f2026] px-2 py-1 rounded-lg border border-gray-800 text-gray-400">
+            <button class="p-1 px-2 rounded hover:bg-gray-800 cursor-pointer text-brand-green" title="Move Tool"><i class="fa-solid fa-mouse-pointer"></i></button>
+            <button class="p-1 px-2 rounded hover:bg-gray-800 cursor-pointer" title="Frame Tool"><i class="fa-solid fa-crop-simple"></i></button>
+            <button class="p-1 px-2 rounded hover:bg-gray-800 cursor-pointer" title="Rectangle Tool"><i class="fa-regular fa-square"></i></button>
+            <button class="p-1 px-2 rounded hover:bg-gray-800 cursor-pointer" title="Pen Tool"><i class="fa-solid fa-pen-nib"></i></button>
+            <button class="p-1 px-2 rounded bg-brand-green/20 text-brand-green" title="Interactive Components"><i class="fa-solid fa-bolt"></i></button>
+            <button class="p-1 px-2 rounded hover:bg-gray-800 cursor-pointer" title="Text Tool"><i class="fa-solid fa-font"></i></button>
+        </div>
+
+        <!-- Figma Right Tools -->
+        <div class="flex items-center space-x-3">
+            <span class="bg-[#10b981]/15 text-[#10b981] px-2.5 py-1 rounded-full text-[10px] font-semibold flex items-center border border-emerald-500/20">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#10b981] mr-1.5 animate-pulse"></span> Uber-Minimalist Redesign
+            </span>
+            <div class="h-4 w-[1px] bg-gray-800"></div>
+            <div class="flex items-center space-x-1.5">
+                <div class="w-6 h-6 rounded-full bg-brand-green text-brand-blue font-bold flex items-center justify-center text-[10px]">
+                    UX
+                </div>
+                <span class="text-gray-400 text-xs font-medium hidden sm:inline-block">Client Workspace</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        
+        <!-- LEFT PANEL: Figma Layers & Interactive Screens Directory -->
+        <section class="w-full lg:w-72 bg-[#14151a] border-r border-gray-800 flex flex-col select-none text-xs">
+            <div class="p-3 border-b border-gray-800 flex items-center justify-between">
+                <span class="font-semibold text-gray-400 tracking-wide text-[10px] uppercase">Artboards</span>
+                <span class="text-[10px] text-gray-500 font-mono">11 Artboards</span>
+            </div>
+            
+            <!-- Artboards list -->
+            <div class="flex-1 overflow-y-auto p-2 space-y-1 text-gray-400" id="screens-list">
+                <div class="text-[10px] text-gray-600 font-bold px-2 py-1 mt-1 uppercase tracking-wider">Flow 1: Premium Onboarding</div>
+                <button onclick="switchScreen('onboarding1')" id="btn-onboarding1" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-[#1e2026] transition duration-150 flex items-center justify-between text-white bg-[#1e2026]">
+                    <span><i class="fa-solid fa-mobile-screen mr-2 text-brand-green"></i> 1. Why Book With Us</span>
+                    <span class="text-[9px] bg-brand-green/20 text-brand-green px-1 rounded">Active</span>
+                </button>
+                <button onclick="switchScreen('onboarding2')" id="btn-onboarding2" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-[#1e2026] transition duration-150 flex items-center justify-between">
+                    <span><i class="fa-solid fa-mobile-screen mr-2 text-gray-600"></i> 2. Rated Great (Trustpilot)</span>
+                </button>
+                <button onclick="switchScreen('onboarding3')" id="btn-onboarding3" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-[#1e2026] transition duration-150 flex items-center justify-between">
+                    <span><i class="fa-solid fa-mobile-screen mr-2 text-gray-600"></i> 3. Booking & Payments</span>
+                </button>
+
+                <div class="text-[10px] text-gray-600 font-bold px-2 py-1 mt-3 uppercase tracking-wider">Flow 2: Authentications</div>
+                <button onclick="switchScreen('login')" id="btn-login" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-[#1e2026] transition duration-150 flex items-center justify-between">
+                    <span><i class="fa-solid fa-mobile-screen mr-2 text-gray-600"></i> 4. Login Screen</span>
+                </button>
+                <button onclick="switchScreen('register')" id="btn-register" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-[#1e2026] transition duration-150 flex items-center justify-between">
+                    <span><i class="fa-solid fa-mobile-screen mr-2 text-gray-600"></i> 5. Register Account</span>
+                </button>
+                <button onclick="switchScreen('resetpass')" id="btn-resetpass" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-[#1e2026] transition duration-150 flex items-center justify-between">
+                    <span><i class="fa-solid fa-mobile-screen mr-2 text-gray-600"></i> 6. Reset Password Link</span>
+                </button>
+
+                <div class="text-[10px] text-gray-600 font-bold px-2 py-1 mt-3 uppercase tracking-wider">Flow 3: Intelligent Booking</div>
+                <button onclick="switchScreen('mainmap')" id="btn-mainmap" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-[#1e2026] transition duration-150 flex items-center justify-between">
+                    <span><i class="fa-solid fa-mobile-screen mr-2 text-gray-600"></i> 7. Dynamic Map & Hub</span>
+                </button>
+                <button onclick="switchScreen('airportbooking')" id="btn-airportbooking" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-[#1e2026] transition duration-150 flex items-center justify-between">
+                    <span><i class="fa-solid fa-mobile-screen mr-2 text-gray-600"></i> 8. Air & Terminal Selector</span>
+                </button>
+                <button onclick="switchScreen('recentsearch')" id="btn-recentsearch" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-[#1e2026] transition duration-150 flex items-center justify-between">
+                    <span><i class="fa-solid fa-mobile-screen mr-2 text-gray-600"></i> 9. Recent Route Selector</span>
+                </button>
+
+                <div class="text-[10px] text-gray-600 font-bold px-2 py-1 mt-3 uppercase tracking-wider">Flow 4: Saved & Personal</div>
+                <button onclick="switchScreen('profilesettings')" id="btn-profilesettings" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-[#1e2026] transition duration-150 flex items-center justify-between">
+                    <span><i class="fa-solid fa-mobile-screen mr-2 text-gray-600"></i> 10. Profile Settings Card</span>
+                </button>
+                <button onclick="switchScreen('favouriteplaces')" id="btn-favouriteplaces" class="w-full text-left px-2.5 py-2 rounded-lg hover:bg-[#1e2026] transition duration-150 flex items-center justify-between">
+                    <span><i class="fa-solid fa-mobile-screen mr-2 text-gray-600"></i> 11. Saved Favourites UX</span>
+                </button>
+            </div>
+
+            <!-- Design Tokens Preview -->
+            <div class="p-3 border-t border-gray-800 bg-[#0e0f12] space-y-3">
+                <h4 class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Active Design Tokens</h4>
+                <div class="grid grid-cols-2 gap-2 text-[10px]">
+                    <div class="bg-black p-2 rounded-lg border border-gray-800">
+                        <div class="font-bold text-white">#000000</div>
+                        <div class="text-gray-500 text-[9px]">Noir Primary</div>
+                    </div>
+                    <div class="bg-brand-green p-2 rounded-lg text-black font-extrabold">
+                        <div class="font-bold">#76BC21</div>
+                        <div class="text-brand-blue text-[9px] font-semibold">Accent Green</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CENTER PANEL: Figma Canvas Grid Workspace -->
+        <section class="flex-1 figma-canvas p-4 lg:p-6 overflow-y-auto flex flex-col xl:flex-row items-center justify-center gap-8 relative">
+            
+            <!-- THE INTERACTIVE PHONE DEVICE -->
+            <div class="relative py-4">
+                <!-- Outer Sleek Minimalist iPhone 14 Bezel -->
+                <div class="phone-mockup w-[375px] h-[812px] bg-black rounded-[55px] p-3 border-4 border-gray-800 relative overflow-hidden flex flex-col ring-8 ring-gray-900/40">
+                    
+                    <!-- Dynamic Phone Screen Content Container -->
+                    <div class="w-full h-full bg-[#fafafa] rounded-[42px] overflow-hidden relative flex flex-col text-gray-900 shadow-inner select-none">
+                        
+                        <!-- Screen Header / Modern Island -->
+                        <div class="absolute top-0 inset-x-0 h-11 bg-transparent z-50 flex items-center justify-between px-6 pointer-events-none">
+                            <!-- Left: Time -->
+                            <span class="text-xs font-bold text-gray-900 tracking-tight" id="ios-time">10:45</span>
+                            <!-- Dynamic Island -->
+                            <div class="w-28 h-[22px] bg-black rounded-full mt-1.5 flex items-center justify-center">
+                                <span class="w-2 h-2 rounded-full bg-blue-900/40 ml-auto mr-4"></span>
+                            </div>
+                            <!-- Right: Icons -->
+                            <div class="flex items-center space-x-1.5 text-xs text-gray-900">
+                                <i class="fa-solid fa-signal text-[9px]"></i>
+                                <i class="fa-solid fa-wifi text-[9px]"></i>
+                                <span class="font-bold text-[9px]">23%</span>
+                                <i class="fa-solid fa-battery-full text-xs"></i>
+                            </div>
+                        </div>
+
+                        <!-- DYNAMIC APP SCREENS -->
+
+                        <!-- ARTBOARD 1: Onboarding Carousel Part 1 -->
+                        <div id="screen-onboarding1" class="screen-view h-full flex flex-col justify-between bg-black text-white pt-16 pb-8 px-6">
+                            <div class="flex justify-between items-center">
+                                <div class="text-[10px] font-bold uppercase tracking-widest text-brand-green">minicabs.co.uk</div>
+                                <button onclick="switchScreen('login')" class="text-gray-400 font-bold text-xs uppercase tracking-wider hover:text-white transition">Skip</button>
+                            </div>
+
+                            <div class="my-auto flex flex-col items-center text-center">
+                                <!-- Reimagined Vector Minimal Car Logo Badge -->
+                                <div class="w-20 h-20 bg-brand-green rounded-full flex items-center justify-center shadow-2xl mb-6">
+                                    <i class="fa-solid fa-car-side text-3xl text-black"></i>
+                                </div>
+                                <h2 class="text-2xl font-black tracking-tight mb-2 text-white">minicabs<span class="text-brand-green">.co.uk</span></h2>
+                                <p class="text-gray-400 text-xs px-2 mb-8 leading-relaxed">Sleek, direct bookings across Greater London. Professional service without pricing surprises.</p>
+                                
+                                <div class="grid grid-cols-2 gap-3 w-full">
+                                    <div class="bg-[#12131a] p-3 rounded-xl border border-gray-800 text-left">
+                                        <i class="fa-solid fa-lock text-brand-green text-sm mb-1.5"></i>
+                                        <div class="text-xs font-bold">Fixed Fares</div>
+                                        <div class="text-[9px] text-gray-500">Know pricing upfront</div>
+                                    </div>
+                                    <div class="bg-[#12131a] p-3 rounded-xl border border-gray-800 text-left">
+                                        <i class="fa-solid fa-circle-check text-brand-green text-sm mb-1.5"></i>
+                                        <div class="text-xs font-bold">No Surcharges</div>
+                                        <div class="text-[9px] text-gray-500">Zero dynamic multiplier</div>
+                                    </div>
+                                    <div class="bg-[#12131a] p-3 rounded-xl border border-gray-800 text-left">
+                                        <i class="fa-solid fa-briefcase text-brand-green text-sm mb-1.5"></i>
+                                        <div class="text-xs font-bold">Business Portal</div>
+                                        <div class="text-[9px] text-gray-500">Corporate reporting</div>
+                                    </div>
+                                    <div class="bg-[#12131a] p-3 rounded-xl border border-gray-800 text-left">
+                                        <i class="fa-solid fa-phone text-brand-green text-sm mb-1.5"></i>
+                                        <div class="text-xs font-bold">24h Dispatch</div>
+                                        <div class="text-[9px] text-gray-500">Human support center</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer Navigation & Pagination -->
+                            <div class="flex flex-col space-y-4">
+                                <div class="flex justify-center space-x-2">
+                                    <span class="w-8 h-1 bg-brand-green rounded-full"></span>
+                                    <span class="w-2 h-1 bg-gray-800 rounded-full"></span>
+                                    <span class="w-2 h-1 bg-gray-800 rounded-full"></span>
+                                </div>
+                                <button onclick="switchScreen('onboarding2')" class="w-full bg-white text-black hover:bg-gray-100 py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition flex items-center justify-center">
+                                    Continue <i class="fa-solid fa-chevron-right ml-2 text-brand-green"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ARTBOARD 2: Onboarding Part 2 -->
+                        <div id="screen-onboarding2" class="screen-view h-full hidden flex flex-col justify-between bg-black text-white pt-16 pb-8 px-6">
+                            <div class="flex justify-between items-center">
+                                <button onclick="switchScreen('onboarding1')" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-chevron-left"></i></button>
+                                <button onclick="switchScreen('login')" class="text-gray-400 font-bold text-xs uppercase tracking-wider hover:text-white transition">Skip</button>
+                            </div>
+
+                            <div class="my-auto flex flex-col items-center text-center">
+                                <div class="inline-flex items-center space-x-1.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-[10px] font-semibold mb-6">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span>TfL Regulated Service</span>
+                                </div>
+                                
+                                <h2 class="text-xl font-bold text-gray-400">Excellent rating from</h2>
+                                <h1 class="text-3xl font-black text-[#00b67a] tracking-tight my-1 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-star text-2xl"></i> Trustpilot
+                                </h1>
+
+                                <div class="flex space-x-1 my-4">
+                                    <div class="bg-[#00b67a] p-1.5 rounded text-white text-[10px]"><i class="fa-solid fa-star"></i></div>
+                                    <div class="bg-[#00b67a] p-1.5 rounded text-white text-[10px]"><i class="fa-solid fa-star"></i></div>
+                                    <div class="bg-[#00b67a] p-1.5 rounded text-white text-[10px]"><i class="fa-solid fa-star"></i></div>
+                                    <div class="bg-[#00b67a] p-1.5 rounded text-white text-[10px]"><i class="fa-solid fa-star"></i></div>
+                                    <div class="bg-gray-800 p-1.5 rounded text-gray-500 text-[10px]"><i class="fa-solid fa-star"></i></div>
+                                </div>
+
+                                <div class="bg-[#12131a] rounded-2xl p-4 border border-gray-800 w-full mt-2 text-left space-y-3">
+                                    <div class="flex items-center space-x-3">
+                                        <i class="fa-solid fa-shield-halved text-brand-green text-sm"></i>
+                                        <div>
+                                            <div class="text-xs font-bold text-white">Full Passenger Coverage</div>
+                                            <div class="text-[9px] text-gray-500">Every vehicle features robust DBS auditing</div>
+                                        </div>
+                                    </div>
+                                    <div class="h-[1px] bg-gray-800"></div>
+                                    <div class="flex items-center space-x-3">
+                                        <i class="fa-solid fa-file-invoice text-brand-green text-sm"></i>
+                                        <div>
+                                            <div class="text-xs font-bold text-white">Transparent Billing</div>
+                                            <div class="text-[9px] text-gray-500">No surprises, detailed digital receipts</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col space-y-4">
+                                <div class="flex justify-center space-x-2">
+                                    <span class="w-2 h-1 bg-gray-800 rounded-full"></span>
+                                    <span class="w-8 h-1 bg-brand-green rounded-full"></span>
+                                    <span class="w-2 h-1 bg-gray-800 rounded-full"></span>
+                                </div>
+                                <button onclick="switchScreen('onboarding3')" class="w-full bg-white text-black hover:bg-gray-100 py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition flex items-center justify-center">
+                                    Continue <i class="fa-solid fa-chevron-right ml-2 text-brand-green"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ARTBOARD 3: Onboarding Part 3 -->
+                        <div id="screen-onboarding3" class="screen-view h-full hidden flex flex-col justify-between bg-black text-white pt-16 pb-8 px-6">
+                            <div class="flex justify-between items-center">
+                                <button onclick="switchScreen('onboarding2')" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-chevron-left"></i></button>
+                                <button onclick="switchScreen('login')" class="text-gray-400 font-bold text-xs uppercase tracking-wider hover:text-white transition">Skip</button>
+                            </div>
+
+                            <div class="my-auto flex flex-col items-center text-center space-y-6">
+                                <div>
+                                    <span class="text-[9px] font-bold uppercase tracking-widest text-brand-green">Universal Connectivity</span>
+                                    <h2 class="text-2xl font-black mt-1">Multi-Channel Access</h2>
+                                </div>
+
+                                <div class="grid grid-cols-3 gap-2 w-full">
+                                    <div class="bg-[#12131a] border border-gray-800 rounded-xl p-3 flex flex-col items-center">
+                                        <i class="fa-solid fa-globe text-brand-green mb-1.5 text-base"></i>
+                                        <span class="text-[9px] font-bold">Web Booking</span>
+                                    </div>
+                                    <div class="bg-[#12131a] border border-brand-green/35 rounded-xl p-3 flex flex-col items-center">
+                                        <i class="fa-solid fa-mobile-screen text-brand-green mb-1.5 text-base"></i>
+                                        <span class="text-[9px] font-bold">Smart App</span>
+                                    </div>
+                                    <div class="bg-[#12131a] border border-gray-800 rounded-xl p-3 flex flex-col items-center">
+                                        <i class="fa-solid fa-phone text-brand-green mb-1.5 text-base"></i>
+                                        <span class="text-[9px] font-bold">Direct Call</span>
+                                    </div>
+                                </div>
+
+                                <div class="bg-[#12131a] border border-gray-800 rounded-xl p-4 w-full text-left">
+                                    <span class="text-[9px] text-gray-500 uppercase font-extrabold block mb-2 tracking-widest">Supported Payment Ecosystems</span>
+                                    <div class="flex items-center space-x-4 text-xs font-bold text-white/90">
+                                        <span class="flex items-center gap-1.5"><i class="fa-brands fa-cc-visa text-blue-400 text-sm"></i> Visa/Debit</span>
+                                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-money-bill-wave text-emerald-400 text-sm"></i> Cash</span>
+                                        <span class="flex items-center gap-1.5"><i class="fa-brands fa-apple-pay text-base text-white"></i> Apple Pay</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col space-y-4">
+                                <div class="flex justify-center space-x-2">
+                                    <span class="w-2 h-1 bg-gray-800 rounded-full"></span>
+                                    <span class="w-2 h-1 bg-gray-800 rounded-full"></span>
+                                    <span class="w-8 h-1 bg-brand-green rounded-full"></span>
+                                </div>
+                                <button onclick="switchScreen('login')" class="w-full bg-brand-green text-black hover:bg-opacity-90 py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition">
+                                    Get Started
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ARTBOARD 4: Uber-style Login Screen -->
+                        <div id="screen-login" class="screen-view h-full hidden flex flex-col justify-between bg-brand-neutralbg text-gray-950 pt-16 pb-6 px-5">
+                            
+                            <div class="flex justify-between items-center h-8">
+                                <button onclick="switchScreen('onboarding3')" class="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                                <span class="font-extrabold text-xs tracking-widest uppercase text-gray-400">Login</span>
+                                <a href="tel:+447907264443" class="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center text-brand-green hover:bg-gray-50 transition"><i class="fa-solid fa-phone text-xs"></i></a>
+                            </div>
+
+                            <div class="mt-4">
+                                <h1 class="text-2xl font-black text-black tracking-tight">Access Account</h1>
+                                <p class="text-xs text-gray-500 mt-0.5">Enter credentials to schedule your ride</p>
+                            </div>
+
+                            <!-- Input Form Box -->
+                            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex-1 my-4 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <!-- Mobile Phone Number Input -->
+                                    <div class="space-y-1">
+                                        <label class="block text-[9px] uppercase tracking-wider font-extrabold text-gray-400">Registered Mobile</label>
+                                        <div class="relative flex items-center">
+                                            <span class="absolute left-3 text-xs font-bold text-gray-900 border-r border-gray-100 pr-2">+44</span>
+                                            <input type="tel" value="7907264443" placeholder="7907264443" class="w-full bg-gray-50/50 border border-gray-100 rounded-xl py-2.5 pl-14 pr-3 text-xs font-semibold focus:border-black outline-none transition" />
+                                        </div>
+                                    </div>
+
+                                    <!-- Password Input -->
+                                    <div class="space-y-1">
+                                        <div class="flex justify-between items-center">
+                                            <label class="block text-[9px] uppercase tracking-wider font-extrabold text-gray-400">Password</label>
+                                            <button onclick="switchScreen('resetpass')" class="text-[9px] font-bold text-gray-500 hover:text-black transition">Forgot password?</button>
+                                        </div>
+                                        <div class="relative">
+                                            <input type="password" value="••••••••••••" placeholder="Enter password" class="w-full bg-gray-50/50 border border-gray-100 rounded-xl py-2.5 pl-3 pr-9 text-xs font-semibold focus:border-black outline-none transition" />
+                                            <span class="absolute right-3 top-3.5 text-gray-400 text-xs cursor-pointer"><i class="fa-regular fa-eye-slash text-[11px]"></i></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Biometric Face ID integration -->
+                                    <div class="bg-gray-50 rounded-xl p-3 flex items-center justify-between border border-gray-100">
+                                        <div class="flex items-center space-x-2.5">
+                                            <div class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-xs">
+                                                <i class="fa-solid fa-face-id text-brand-green"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-[10px] font-extrabold text-black">Fast Biometric Login</div>
+                                                <div class="text-[8px] text-gray-400">Log in securely with Face ID</div>
+                                            </div>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" checked class="sr-only peer">
+                                            <div class="w-7 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-black"></div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 space-y-2">
+                                    <button onclick="triggerFaceId()" class="w-full bg-black text-white hover:bg-neutral-900 py-3 rounded-xl text-xs font-bold tracking-wider uppercase transition flex items-center justify-center">
+                                        <i class="fa-solid fa-face-id mr-2 text-brand-green"></i> Face ID Quick Login
+                                    </button>
+                                    
+                                    <button onclick="switchScreen('mainmap')" class="w-full bg-gray-100 text-black hover:bg-gray-200 py-2.5 rounded-xl text-xs font-semibold transition">
+                                        Use Mobile & Password
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Social Providers block -->
+                            <div class="flex flex-col items-center">
+                                <span class="text-[9px] text-gray-400 uppercase tracking-widest font-extrabold mb-3">Or Connect With</span>
+                                <div class="grid grid-cols-2 gap-3 w-full">
+                                    <button onclick="switchScreen('mainmap')" class="bg-white hover:bg-gray-50 border border-gray-200 rounded-xl py-2 flex items-center justify-center space-x-2 text-[11px] font-bold shadow-sm transition">
+                                        <i class="fa-brands fa-google text-red-500"></i>
+                                        <span>Google</span>
+                                    </button>
+                                    <button onclick="switchScreen('mainmap')" class="bg-white hover:bg-gray-50 border border-gray-200 rounded-xl py-2 flex items-center justify-center space-x-2 text-[11px] font-bold shadow-sm transition">
+                                        <i class="fa-brands fa-apple"></i>
+                                        <span>Apple Pay</span>
+                                    </button>
+                                </div>
+                                <button onclick="switchScreen('register')" class="text-xs text-gray-500 font-bold hover:text-black transition mt-4">
+                                    New client? <span class="text-brand-green underline">Register instead</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ARTBOARD 5: Register Screen -->
+                        <div id="screen-register" class="screen-view h-full hidden flex flex-col justify-between bg-brand-neutralbg text-gray-950 pt-16 pb-6 px-5">
+                            
+                            <div class="flex justify-between items-center h-8">
+                                <button onclick="switchScreen('login')" class="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                                <span class="font-extrabold text-xs tracking-widest uppercase text-gray-400">Sign Up</span>
+                                <a href="tel:+447907264443" class="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center text-brand-green hover:bg-gray-50 transition"><i class="fa-solid fa-phone text-xs"></i></a>
+                            </div>
+
+                            <div class="mt-4">
+                                <h1 class="text-2xl font-black text-black tracking-tight">Create Profile</h1>
+                                <p class="text-xs text-gray-500 mt-0.5">Quick access to vehicles in Greater London</p>
+                            </div>
+
+                            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex-1 my-4 overflow-y-auto space-y-3.5">
+                                <!-- Full Name Input -->
+                                <div class="space-y-1">
+                                    <label class="block text-[9px] uppercase tracking-wider font-extrabold text-gray-400">Full Name</label>
+                                    <input type="text" placeholder="e.g. AliM Sofi" class="w-full bg-gray-50/50 border border-gray-100 rounded-xl py-2.5 px-3 text-xs font-semibold focus:border-black outline-none transition" />
+                                </div>
+
+                                <!-- Email Input -->
+                                <div class="space-y-1">
+                                    <label class="block text-[9px] uppercase tracking-wider font-extrabold text-gray-400">Email Address</label>
+                                    <input type="email" placeholder="e.g. ali.alim@gmail.com" class="w-full bg-gray-50/50 border border-gray-100 rounded-xl py-2.5 px-3 text-xs font-semibold focus:border-black outline-none transition" />
+                                </div>
+
+                                <!-- Mobile Input -->
+                                <div class="space-y-1">
+                                    <label class="block text-[9px] uppercase tracking-wider font-extrabold text-gray-400">Mobile Number</label>
+                                    <div class="relative flex items-center">
+                                        <span class="absolute left-3 flex items-center space-x-1 text-xs font-bold text-gray-900 border-r border-gray-100 pr-2">
+                                            <span>🇬🇧</span>
+                                            <span>+44</span>
+                                        </span>
+                                        <input type="tel" placeholder="Mobile phone" class="w-full bg-gray-50/50 border border-gray-100 rounded-xl py-2.5 pl-16 pr-3 text-xs font-semibold focus:border-black outline-none transition" />
+                                    </div>
+                                </div>
+
+                                <!-- Password Input -->
+                                <div class="space-y-1">
+                                    <label class="block text-[9px] uppercase tracking-wider font-extrabold text-gray-400">Password</label>
+                                    <div class="relative">
+                                        <input type="password" placeholder="Create complex password" class="w-full bg-gray-50/50 border border-gray-100 rounded-xl py-2.5 pl-3 pr-9 text-xs font-semibold focus:border-black outline-none transition" />
+                                        <span class="absolute right-3 top-3 text-gray-400 text-xs cursor-pointer"><i class="fa-regular fa-eye-slash text-[11px]"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start space-x-2 pt-1">
+                                    <input type="checkbox" id="terms-check-new" class="w-4 h-4 text-black border-gray-300 rounded focus:ring-black mt-0.5" />
+                                    <label for="terms-check-new" class="text-[9px] text-gray-400 font-medium leading-relaxed">
+                                        I accept the <a href="#" class="text-black font-bold hover:underline">Privacy Policy</a> and <a href="#" class="text-black font-bold hover:underline">Terms of Service</a>.
+                                    </label>
+                                </div>
+
+                                <button onclick="switchScreen('mainmap')" class="w-full bg-black text-white hover:bg-neutral-900 py-3 rounded-xl text-xs font-bold tracking-wider uppercase transition mt-4">
+                                    Register Account
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ARTBOARD 6: Reset Password -->
+                        <div id="screen-resetpass" class="screen-view h-full hidden flex flex-col justify-between bg-brand-neutralbg text-gray-950 pt-16 pb-6 px-5">
+                            <div class="flex justify-between items-center h-8">
+                                <button onclick="switchScreen('login')" class="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                                <span class="font-extrabold text-xs tracking-widest uppercase text-gray-400">Recovery</span>
+                                <div class="w-8 h-8"></div>
+                            </div>
+
+                            <div class="my-auto text-center px-4 space-y-4">
+                                <div class="w-14 h-14 bg-gray-100 text-black rounded-full flex items-center justify-center mx-auto mb-2 text-xl">
+                                    <i class="fa-solid fa-key text-brand-green"></i>
+                                </div>
+                                <h1 class="text-xl font-black text-black">Reset Credentials</h1>
+                                <p class="text-xs text-gray-500 leading-relaxed">Provide your mobile number below. We will transmit an activation code instantly.</p>
+                                
+                                <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-left mt-4 space-y-3">
+                                    <div class="space-y-1">
+                                        <label class="block text-[9px] uppercase tracking-wider font-extrabold text-gray-400">Registered Mobile</label>
+                                        <div class="relative flex items-center">
+                                            <span class="absolute left-3 text-xs font-bold text-gray-900 border-r border-gray-100 pr-2">+44</span>
+                                            <input type="tel" placeholder="7907264443" class="w-full bg-gray-50/50 border border-gray-100 rounded-xl py-2.5 pl-14 pr-3 text-xs font-semibold focus:border-black outline-none transition" />
+                                        </div>
+                                    </div>
+                                    <button onclick="toastMessage('OTP Shared successfully!')" class="w-full bg-black text-white hover:bg-neutral-900 py-3 rounded-xl text-xs font-bold tracking-wider uppercase transition">
+                                        Request Reset Link
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="text-center text-xs text-gray-500">
+                                Remember details? <button onclick="switchScreen('login')" class="text-black font-extrabold hover:underline">Log in</button>
+                            </div>
+                        </div>
+
+                        <!-- ARTBOARD 7: Map Dashboard & Sliding Side Menu -->
+                        <div id="screen-mainmap" class="screen-view h-full hidden flex flex-col justify-between bg-gray-100 text-gray-950 pt-16 relative overflow-hidden">
+                            
+                            <!-- SIMULATED LIVE MAP (Clean Uber Light-Grey Style) -->
+                            <div class="absolute inset-0 z-0 bg-[#ebebeb]">
+                                <svg class="w-full h-full opacity-80" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Simplified Minimal Grid Roads -->
+                                    <line x1="40" y1="0" x2="40" y2="800" stroke="#fcfcfd" stroke-width="12" />
+                                    <line x1="200" y1="0" x2="200" y2="800" stroke="#fcfcfd" stroke-width="14" />
+                                    <line x1="320" y1="0" x2="320" y2="800" stroke="#fcfcfd" stroke-width="8" />
+                                    
+                                    <line x1="0" y1="120" x2="400" y2="120" stroke="#fcfcfd" stroke-width="14" />
+                                    <line x1="0" y1="360" x2="400" y2="360" stroke="#fcfcfd" stroke-width="12" />
+                                    <line x1="0" y1="600" x2="400" y2="600" stroke="#fcfcfd" stroke-width="10" />
+                                    
+                                    <!-- Clean Diagonal Road -->
+                                    <line x1="0" y1="0" x2="400" y2="800" stroke="#ffffff" stroke-width="6" />
+
+                                    <!-- Minimalist grey/green parks -->
+                                    <rect x="55" y="10" width="130" height="95" rx="14" fill="#e2f0d9" />
+                                    <rect x="215" y="135" width="95" height="210" rx="14" fill="#e2f0d9" />
+                                    <rect x="55" y="375" width="130" height="210" rx="14" fill="#e2f0d9" />
+                                </svg>
+                                
+                                <!-- Sleek Center Route Pin Indicator -->
+                                <div class="absolute top-[40%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-10">
+                                    <div class="relative flex flex-col items-center">
+                                        <!-- Pin label pill -->
+                                        <div class="bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded-full mb-1 shadow-md border border-gray-800 whitespace-nowrap">
+                                            Pick-up Spot
+                                        </div>
+                                        <div class="bg-black text-white p-2.5 rounded-full shadow-2xl border-2 border-brand-green flex items-center justify-center w-9 h-9 animate-pulse">
+                                            <i class="fa-solid fa-car-side text-xs text-brand-green"></i>
+                                        </div>
+                                        <div class="w-1.5 h-1.5 bg-black rounded-full border border-white mt-1 shadow"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Active Cars -->
+                                <div class="absolute top-[22%] left-[30%] z-10 opacity-90 transition-all duration-1000"><i class="fa-solid fa-car text-black text-xs"></i></div>
+                                <div class="absolute top-[55%] left-[65%] z-10 opacity-90"><i class="fa-solid fa-car text-black text-xs"></i></div>
+                                <div class="absolute top-[48%] left-[10%] z-10 opacity-90"><i class="fa-solid fa-car text-brand-green text-xs"></i></div>
+                            </div>
+
+                            <!-- Floating Top Action Bar -->
+                            <div class="absolute top-16 inset-x-0 px-4 z-20 flex justify-between items-center">
+                                <button onclick="toggleSidebar(true)" class="w-10 h-10 rounded-xl bg-white shadow-xl flex items-center justify-center text-black hover:bg-gray-50 transition border border-gray-100">
+                                    <i class="fa-solid fa-bars-staggered text-sm"></i>
+                                </button>
+                                
+                                <div class="bg-black/95 backdrop-blur shadow-xl px-4 py-2 rounded-full border border-gray-800 flex items-center space-x-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-brand-green animate-pulse"></div>
+                                    <span class="text-[9px] uppercase tracking-widest font-extrabold text-white">minicabs.co.uk</span>
+                                </div>
+
+                                <button onclick="switchScreen('profilesettings')" class="w-10 h-10 rounded-xl bg-black text-white shadow-xl flex items-center justify-center text-xs font-bold border border-brand-green">
+                                    AS
+                                </button>
+                            </div>
+
+                            <!-- Floating Map Controls -->
+                            <div class="absolute right-4 bottom-[275px] z-20 flex flex-col space-y-2">
+                                <button onclick="toastMessage('Locating precise GPS coordinate...')" class="w-10 h-10 rounded-xl bg-white shadow-lg flex items-center justify-center text-black border border-gray-100">
+                                    <i class="fa-solid fa-crosshairs text-xs"></i>
+                                </button>
+                                <button onclick="switchScreen('favouriteplaces')" class="w-10 h-10 rounded-xl bg-brand-green text-black shadow-lg flex items-center justify-center border border-white">
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                </button>
+                            </div>
+
+                            <!-- BOTTOM SHEET: Reimagined Uber-style Flat Search Card -->
+                            <div class="absolute bottom-0 inset-x-0 bg-white rounded-t-[32px] shadow-2xl z-20 border-t border-gray-100 p-5 pt-3 flex flex-col space-y-4">
+                                <div class="w-12 h-1 bg-gray-200 rounded-full mx-auto"></div>
+
+                                <div>
+                                    <h3 class="text-sm font-black text-black tracking-tight">Schedule Journey</h3>
+                                    <p class="text-[10px] text-gray-400">Fixed London rates, professional drivers</p>
+                                </div>
+
+                                <!-- Sleek Search Bars -->
+                                <div class="space-y-2">
+                                    <!-- Origin -->
+                                    <button onclick="switchScreen('recentsearch')" class="w-full bg-gray-50 border border-gray-100 hover:border-black rounded-xl p-2.5 flex items-center justify-between transition text-left">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-2 h-2 rounded-full bg-brand-green"></div>
+                                            <div>
+                                                <div class="text-[8px] uppercase tracking-wider font-bold text-gray-400">Pick-up position</div>
+                                                <div class="text-xs font-bold text-gray-800">Your current location</div>
+                                            </div>
+                                        </div>
+                                        <i class="fa-solid fa-location-crosshairs text-gray-400 text-xs"></i>
+                                    </button>
+
+                                    <!-- Destination -->
+                                    <button onclick="switchScreen('airportbooking')" class="w-full bg-gray-50 border border-gray-100 hover:border-black rounded-xl p-2.5 flex items-center justify-between transition text-left">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-2 h-2 rounded-full bg-black"></div>
+                                            <div>
+                                                <div class="text-[8px] uppercase tracking-wider font-bold text-gray-400">Where to?</div>
+                                                <div class="text-xs font-bold text-gray-400">Search terminal, postcode, hotel...</div>
+                                            </div>
+                                        </div>
+                                        <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Favourites Shortcuts Row -->
+                                <div class="flex items-center justify-between pt-1">
+                                    <span class="text-[10px] uppercase tracking-wider font-extrabold text-gray-400">Saved Shortcuts</span>
+                                    <button onclick="switchScreen('favouriteplaces')" class="text-[10px] font-bold text-brand-blue flex items-center"><i class="fa-solid fa-gear mr-1"></i> Config</button>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="selectTerminal('London Heathrow Airport Terminal 5')" class="bg-gray-50 border border-gray-100 hover:bg-gray-100 rounded-xl p-2.5 flex items-center space-x-2.5 text-left transition">
+                                        <div class="w-7 h-7 bg-amber-500/10 text-amber-600 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-plane"></i></div>
+                                        <div class="overflow-hidden">
+                                            <div class="text-[10px] font-black text-gray-800 truncate">Heathrow T5</div>
+                                            <div class="text-[8px] text-gray-400 truncate">Airport Terminal</div>
+                                        </div>
+                                    </button>
+                                    <button onclick="selectTerminal('Liverpool Street Station')" class="bg-gray-50 border border-gray-100 hover:bg-gray-100 rounded-xl p-2.5 flex items-center space-x-2.5 text-left transition">
+                                        <div class="w-7 h-7 bg-blue-500/10 text-blue-600 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-train"></i></div>
+                                        <div class="overflow-hidden">
+                                            <div class="text-[10px] font-black text-gray-800 truncate">Liverpool St.</div>
+                                            <div class="text-[8px] text-gray-400 truncate">Railway Station</div>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- SLIDING DRAWER MENU MOCKUP -->
+                            <div id="side-drawer" class="absolute inset-y-0 left-0 w-[280px] bg-white z-50 shadow-2xl transition-transform duration-300 transform -translate-x-full flex flex-col justify-between">
+                                <div>
+                                    <div class="bg-black text-white p-5 pt-14 relative">
+                                        <button onclick="toggleSidebar(false)" class="absolute top-4 right-4 text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark text-base"></i></button>
+                                        
+                                        <div class="flex items-center space-x-2 mb-4">
+                                            <div class="w-8 h-8 rounded-full bg-brand-green flex items-center justify-center">
+                                                <i class="fa-solid fa-car-side text-black text-xs"></i>
+                                            </div>
+                                            <span class="font-black text-xs tracking-wider">minicabs<span class="text-brand-green">.co.uk</span></span>
+                                        </div>
+                                        
+                                        <div class="flex items-center space-x-3 mt-4">
+                                            <div class="w-10 h-10 rounded-xl bg-brand-green text-black font-black flex items-center justify-center">AS</div>
+                                            <div>
+                                                <div class="text-xs font-bold">AliM Sofi</div>
+                                                <div class="text-[9px] text-gray-400">ali.alim@gmail.com</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-3 space-y-1">
+                                        <button onclick="switchScreen('profilesettings'); toggleSidebar(false);" class="w-full flex items-center space-x-3.5 px-4 py-2.5 rounded-xl hover:bg-gray-50 text-gray-700 transition text-left">
+                                            <i class="fa-regular fa-user text-black text-xs w-4"></i>
+                                            <span class="text-[11px] font-bold">Manage Profile</span>
+                                        </button>
+                                        <button onclick="switchScreen('recentsearch'); toggleSidebar(false);" class="w-full flex items-center space-x-3.5 px-4 py-2.5 rounded-xl hover:bg-gray-50 text-gray-700 transition text-left">
+                                            <i class="fa-regular fa-clock text-black text-xs w-4"></i>
+                                            <span class="text-[11px] font-bold">Recent Travels</span>
+                                        </button>
+                                        <button onclick="switchScreen('favouriteplaces'); toggleSidebar(false);" class="w-full flex items-center space-x-3.5 px-4 py-2.5 rounded-xl hover:bg-gray-50 text-gray-700 transition text-left">
+                                            <i class="fa-regular fa-heart text-black text-xs w-4"></i>
+                                            <span class="text-[11px] font-bold">Favourite Places</span>
+                                        </button>
+                                        <button onclick="switchScreen('onboarding1'); toggleSidebar(false);" class="w-full flex items-center space-x-3.5 px-4 py-2.5 rounded-xl hover:bg-gray-50 text-gray-700 transition text-left">
+                                            <i class="fa-solid fa-info-circle text-black text-xs w-4"></i>
+                                            <span class="text-[11px] font-bold">System Features</span>
+                                        </button>
+                                        <div class="h-[1px] bg-gray-100 my-2"></div>
+                                        <button onclick="toastMessage('20% promo shared!')" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-emerald-50 text-left border border-emerald-100 transition">
+                                            <div class="flex items-center space-x-3">
+                                                <i class="fa-solid fa-ticket text-brand-green text-xs"></i>
+                                                <span class="text-[11px] font-bold text-black">Get 20% Discount</span>
+                                            </div>
+                                            <span class="text-[9px] bg-black text-white px-1.5 py-0.5 rounded font-extrabold">INVITE</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="p-4 border-t border-gray-100 flex items-center justify-between">
+                                    <button onclick="switchScreen('login'); toggleSidebar(false);" class="text-xs font-bold text-red-500 hover:text-red-600 transition flex items-center">
+                                        <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Log Out
+                                    </button>
+                                    <span class="text-[9px] text-gray-400 font-mono">v4.0.2</span>
+                                </div>
+                            </div>
+                            
+                            <div id="sidebar-overlay" onclick="toggleSidebar(false)" class="absolute inset-0 bg-black/40 z-40 hidden transition-opacity"></div>
+                        </div>
+
+                        <!-- ARTBOARD 8: Air & Terminal Destination Selection -->
+                        <div id="screen-airportbooking" class="screen-view h-full hidden bg-brand-neutralbg text-gray-950 pt-16 pb-4 px-4 flex flex-col justify-between">
+                            
+                            <div class="flex justify-between items-center h-8">
+                                <button onclick="switchScreen('mainmap')" class="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                                <span class="font-extrabold text-xs tracking-widest uppercase text-gray-400">Airports</span>
+                                <div class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-black text-xs"><i class="fa-solid fa-plane"></i></div>
+                            </div>
+
+                            <div class="mt-4 relative">
+                                <span class="absolute left-3.5 top-3.5 text-gray-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
+                                <input type="text" placeholder="e.g. Heathrow Terminal 5" class="w-full bg-white border border-gray-200 shadow-sm rounded-xl py-2.5 pl-10 pr-4 text-xs font-semibold focus:border-black outline-none transition" />
+                            </div>
+
+                            <div class="grid grid-cols-4 gap-1.5 my-3">
+                                <button onclick="switchScreen('recentsearch')" class="bg-white hover:bg-gray-100 p-2 rounded-xl text-center border border-gray-100 text-[9px] font-bold text-gray-400 flex flex-col items-center transition">
+                                    <i class="fa-regular fa-clock mb-1"></i> Recent
+                                </button>
+                                <button class="bg-black text-white p-2 rounded-xl text-center border border-black text-[9px] font-bold flex flex-col items-center transition">
+                                    <i class="fa-solid fa-plane mb-1 text-brand-green"></i> Airports
+                                </button>
+                                <button onclick="toastMessage('Locating London Railway hubs...')" class="bg-white hover:bg-gray-100 p-2 rounded-xl text-center border border-gray-100 text-[9px] font-bold text-gray-400 flex flex-col items-center transition">
+                                    <i class="fa-solid fa-train mb-1"></i> Stations
+                                </button>
+                                <button onclick="switchScreen('favouriteplaces')" class="bg-white hover:bg-gray-100 p-2 rounded-xl text-center border border-gray-100 text-[9px] font-bold text-gray-400 flex flex-col items-center transition">
+                                    <i class="fa-regular fa-heart mb-1"></i> Saved
+                                </button>
+                            </div>
+
+                            <!-- Terminal list -->
+                            <div class="flex-1 overflow-y-auto space-y-2 pr-1" id="airports-list">
+                                <span class="text-[9px] text-gray-400 uppercase tracking-widest font-extrabold block px-1 mb-1">Major London Airports</span>
+                                
+                                <button onclick="selectTerminal('Heathrow Terminal 5')" class="w-full bg-white hover:bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center justify-between text-left transition">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center text-xs"><i class="fa-solid fa-plane"></i></div>
+                                        <div>
+                                            <div class="text-xs font-black text-black">London Heathrow (LHR)</div>
+                                            <div class="text-[9px] text-gray-400">Terminal 5 Departure Spot</div>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+                                </button>
+
+                                <button onclick="selectTerminal('Heathrow Terminal 4')" class="w-full bg-white hover:bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center justify-between text-left transition">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center text-xs"><i class="fa-solid fa-plane"></i></div>
+                                        <div>
+                                            <div class="text-xs font-black text-black">London Heathrow (LHR)</div>
+                                            <div class="text-[9px] text-gray-400">Terminal 4 Departure Spot</div>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+                                </button>
+
+                                <button onclick="selectTerminal('Gatwick South Terminal')" class="w-full bg-white hover:bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center justify-between text-left transition">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center text-xs"><i class="fa-solid fa-plane"></i></div>
+                                        <div>
+                                            <div class="text-xs font-black text-black">London Gatwick (LGW)</div>
+                                            <div class="text-[9px] text-gray-400">South Terminal Hub</div>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+                                </button>
+
+                                <button onclick="selectTerminal('Stansted Airport Hub')" class="w-full bg-white hover:bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center justify-between text-left transition">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center text-xs"><i class="fa-solid fa-plane"></i></div>
+                                        <div>
+                                            <div class="text-xs font-black text-black">London Stansted (STN)</div>
+                                            <div class="text-[9px] text-gray-400">Main Departure Terminal</div>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ARTBOARD 9: Recent Search Screen -->
+                        <div id="screen-recentsearch" class="screen-view h-full hidden bg-brand-neutralbg text-gray-950 pt-16 pb-4 px-4 flex flex-col justify-between">
+                            
+                            <div class="flex justify-between items-center h-8">
+                                <button onclick="switchScreen('mainmap')" class="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                                <span class="font-extrabold text-xs tracking-widest uppercase text-gray-400">History</span>
+                                <button onclick="toastMessage('Cleared history items')" class="text-[9px] text-red-500 font-bold hover:underline">Clear All</button>
+                            </div>
+
+                            <div class="mt-4 relative">
+                                <span class="absolute left-3.5 top-3.5 text-gray-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
+                                <input type="text" placeholder="Search previous paths..." class="w-full bg-white border border-gray-200 shadow-sm rounded-xl py-2.5 pl-10 pr-4 text-xs font-semibold focus:border-black outline-none transition" />
+                            </div>
+
+                            <div class="grid grid-cols-4 gap-1.5 my-3">
+                                <button class="bg-black text-white p-2 rounded-xl text-center border border-black text-[9px] font-bold flex flex-col items-center transition">
+                                    <i class="fa-regular fa-clock mb-1 text-brand-green"></i> Recent
+                                </button>
+                                <button onclick="switchScreen('airportbooking')" class="bg-white hover:bg-gray-100 p-2 rounded-xl text-center border border-gray-100 text-[9px] font-bold text-gray-400 flex flex-col items-center transition">
+                                    <i class="fa-solid fa-plane mb-1"></i> Airports
+                                </button>
+                                <button onclick="toastMessage('Locating train platforms...')" class="bg-white hover:bg-gray-100 p-2 rounded-xl text-center border border-gray-100 text-[9px] font-bold text-gray-400 flex flex-col items-center transition">
+                                    <i class="fa-solid fa-train mb-1"></i> Stations
+                                </button>
+                                <button onclick="switchScreen('favouriteplaces')" class="bg-white hover:bg-gray-100 p-2 rounded-xl text-center border border-gray-100 text-[9px] font-bold text-gray-400 flex flex-col items-center transition">
+                                    <i class="fa-regular fa-heart mb-1"></i> Saved
+                                </button>
+                            </div>
+
+                            <div class="flex-1 overflow-y-auto space-y-2 pr-1">
+                                <span class="text-[9px] text-gray-400 uppercase tracking-widest font-extrabold block px-1 mb-1">Previous Route Selections</span>
+
+                                <button onclick="selectTerminal('7 Spring Gardens')" class="w-full bg-white hover:bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center justify-between text-left transition">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 rounded-lg bg-gray-100 text-black flex items-center justify-center text-xs"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                                        <div>
+                                            <div class="text-xs font-black text-black">7 Spring Gardens</div>
+                                            <div class="text-[9px] text-gray-400">London Greater Area</div>
+                                        </div>
+                                    </div>
+                                    <span class="text-[9px] bg-black text-white px-2 py-1 rounded font-bold">Rebook</span>
+                                </button>
+
+                                <button onclick="selectTerminal('Liverpool Street Station')" class="w-full bg-white hover:bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center justify-between text-left transition">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 rounded-lg bg-gray-100 text-black flex items-center justify-center text-xs"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                                        <div>
+                                            <div class="text-xs font-black text-black">Liverpool Street Station</div>
+                                            <div class="text-[9px] text-gray-400">London EC2M 7PY</div>
+                                        </div>
+                                    </div>
+                                    <span class="text-[9px] bg-black text-white px-2 py-1 rounded font-bold">Rebook</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ARTBOARD 10: Reimagined Profile Settings Screen -->
+                        <div id="screen-profilesettings" class="screen-view h-full hidden bg-brand-neutralbg text-gray-950 pt-16 pb-4 px-4 flex flex-col justify-between overflow-y-auto">
+                            
+                            <div class="flex justify-between items-center h-8">
+                                <button onclick="switchScreen('mainmap')" class="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                                <span class="font-extrabold text-xs tracking-widest uppercase text-gray-400">Profile Settings</span>
+                                <div class="w-8 h-8"></div>
+                            </div>
+
+                            <div class="bg-black rounded-2xl p-4 text-white shadow-xl my-4 flex items-center space-x-3.5">
+                                <div class="w-12 h-12 bg-brand-green text-black rounded-xl flex items-center justify-center text-base font-black">
+                                    AS
+                                </div>
+                                <div class="flex-1 overflow-hidden">
+                                    <h2 class="text-sm font-bold truncate">AliM Sofi</h2>
+                                    <p class="text-[9px] text-gray-400">TfL Passenger Verified</p>
+                                    <div class="mt-1 inline-flex items-center px-2 py-0.5 rounded bg-brand-green/10 border border-brand-green/20 text-[8px] text-brand-green font-bold uppercase">
+                                        <i class="fa-solid fa-circle-check mr-1"></i> Account Checked
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
+                                    <span class="text-[9px] text-gray-400 uppercase tracking-widest font-extrabold block mb-1">Personal Info</span>
+                                    
+                                    <div>
+                                        <label class="block text-[8px] text-gray-400 font-bold uppercase">Mobile Identifier</label>
+                                        <div class="flex items-center justify-between py-1 border-b border-gray-100">
+                                            <span class="text-xs font-bold text-gray-800">+917051720629</span>
+                                            <span class="text-[9px] text-emerald-600 font-bold uppercase">Verified</span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-[8px] text-gray-400 font-bold uppercase">Full Name</label>
+                                        <div class="flex items-center justify-between py-1 border-b border-gray-100">
+                                            <input type="text" value="AliM Sofi" class="text-xs font-bold text-gray-800 bg-transparent outline-none w-full" />
+                                            <i class="fa-regular fa-pen-to-square text-gray-400 text-[11px]"></i>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-[8px] text-gray-400 font-bold uppercase">Account Email</label>
+                                        <div class="flex items-center justify-between py-1 border-b border-gray-100">
+                                            <input type="email" value="ali.alim@gmail.com" class="text-xs font-bold text-gray-800 bg-transparent outline-none w-full" />
+                                            <i class="fa-regular fa-pen-to-square text-gray-400 text-[11px]"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between pt-1">
+                                        <div>
+                                            <div class="text-[10px] font-bold text-black">Promotional Alerts</div>
+                                            <div class="text-[8px] text-gray-400">Receive weekly fixed rate promotions</div>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" checked class="sr-only peer">
+                                            <div class="w-7 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-black"></div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-1">
+                                    <span class="text-[9px] text-gray-400 uppercase tracking-widest font-extrabold block mb-1">Safety & Security</span>
+                                    
+                                    <button onclick="switchScreen('resetpass')" class="w-full flex items-center justify-between py-1.5 text-left hover:bg-gray-50 rounded">
+                                        <span class="text-xs font-bold text-gray-700"><i class="fa-solid fa-lock text-gray-400 mr-2"></i> Update Password</span>
+                                        <i class="fa-solid fa-chevron-right text-gray-300 text-[10px]"></i>
+                                    </button>
+
+                                    <button onclick="toastMessage('Verifying account hardware signatures...')" class="w-full flex items-center justify-between py-1.5 text-left hover:bg-gray-50 rounded">
+                                        <span class="text-xs font-bold text-gray-700"><i class="fa-solid fa-shield-halved text-gray-400 mr-2"></i> Signed Devices</span>
+                                        <i class="fa-solid fa-chevron-right text-gray-300 text-[10px]"></i>
+                                    </button>
+
+                                    <button onclick="toastMessage('Account deletion pending confirmation...')" class="w-full flex items-center justify-between py-1.5 text-left hover:bg-gray-50 rounded">
+                                        <span class="text-xs font-bold text-red-500"><i class="fa-solid fa-trash text-red-300 mr-2"></i> Delete Account Profile</span>
+                                        <i class="fa-solid fa-chevron-right text-red-200 text-[10px]"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <button onclick="toastMessage('Saved changes to user profile')" class="w-full bg-black text-white hover:bg-neutral-900 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition">
+                                    Save Settings
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ARTBOARD 11: Favourite Places Screen -->
+                        <div id="screen-favouriteplaces" class="screen-view h-full hidden bg-brand-neutralbg text-gray-950 pt-16 pb-4 px-4 flex flex-col justify-between">
+                            
+                            <div class="flex justify-between items-center h-8">
+                                <button onclick="switchScreen('mainmap')" class="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                                <span class="font-extrabold text-xs tracking-widest uppercase text-gray-400">Favourites</span>
+                                <button onclick="toastMessage('Create favorite location shortcut')" class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shadow-sm text-xs"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+
+                            <div class="bg-[#12131a] text-white rounded-2xl p-4 my-4 flex items-center space-x-3">
+                                <div class="w-9 h-9 bg-brand-green text-black rounded-lg flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-xs font-extrabold">Instant One-Click Cab</h4>
+                                    <p class="text-[9px] text-gray-400">Trigger a booking directly with absolute zero setup.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex-1 overflow-y-auto space-y-2 pr-1">
+                                <!-- Place 1 -->
+                                <div class="bg-white border border-gray-100 rounded-xl p-3 flex items-center justify-between shadow-sm">
+                                    <div class="flex items-center space-x-3 overflow-hidden">
+                                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs"><i class="fa-solid fa-briefcase"></i></div>
+                                        <div class="overflow-hidden">
+                                            <div class="text-xs font-extrabold text-gray-800">Main Corporate HQ</div>
+                                            <div class="text-[9px] text-gray-400 truncate">7 Spring Gardens, London, UK</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-1.5">
+                                        <button onclick="selectTerminal('7 Spring Gardens')" class="text-[9px] bg-black text-white px-2.5 py-1.5 rounded-lg font-bold hover:bg-neutral-900 transition">Go</button>
+                                        <button onclick="toastMessage('Edit option clicked')" class="text-gray-400 hover:text-black transition p-1"><i class="fa-solid fa-ellipsis-vertical text-[10px]"></i></button>
+                                    </div>
+                                </div>
+
+                                <!-- Place 2 -->
+                                <div class="bg-white border border-gray-100 rounded-xl p-3 flex items-center justify-between shadow-sm">
+                                    <div class="flex items-center space-x-3 overflow-hidden">
+                                        <div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center text-xs"><i class="fa-solid fa-plane"></i></div>
+                                        <div class="overflow-hidden">
+                                            <div class="text-xs font-extrabold text-gray-800">Heathrow Departure (T5)</div>
+                                            <div class="text-[9px] text-gray-400 truncate">LHR Terminal 5, Greater London</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-1.5">
+                                        <button onclick="selectTerminal('Heathrow Terminal 5')" class="text-[9px] bg-black text-white px-2.5 py-1.5 rounded-lg font-bold hover:bg-neutral-900 transition">Go</button>
+                                        <button onclick="toastMessage('Edit option clicked')" class="text-gray-400 hover:text-black transition p-1"><i class="fa-solid fa-ellipsis-vertical text-[10px]"></i></button>
+                                    </div>
+                                </div>
+
+                                <!-- Place 3 -->
+                                <div class="bg-white border border-gray-100 rounded-xl p-3 flex items-center justify-between shadow-sm">
+                                    <div class="flex items-center space-x-3 overflow-hidden">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs"><i class="fa-solid fa-house"></i></div>
+                                        <div class="overflow-hidden">
+                                            <div class="text-xs font-extrabold text-gray-800">Home Base Residence</div>
+                                            <div class="text-[9px] text-gray-400 truncate">Liverpool Street, London EC2M</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-1.5">
+                                        <button onclick="selectTerminal('Liverpool Street Station')" class="text-[9px] bg-black text-white px-2.5 py-1.5 rounded-lg font-bold hover:bg-neutral-900 transition">Go</button>
+                                        <button onclick="toastMessage('Edit option clicked')" class="text-gray-400 hover:text-black transition p-1"><i class="fa-solid fa-ellipsis-vertical text-[10px]"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TOAST NOTIFICATION POPUP -->
+                        <div id="toast" class="absolute bottom-20 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-4 py-2.5 rounded-xl shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center space-x-2 border border-gray-800">
+                            <i class="fa-solid fa-circle-check text-brand-green"></i>
+                            <span id="toast-text" class="font-bold">Success Message</span>
+                        </div>
+
+                        <!-- MODAL POPUP: Face ID Simulator -->
+                        <div id="faceid-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+                            <div class="bg-white rounded-3xl p-6 text-center w-[280px] shadow-2xl border border-gray-100">
+                                <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse border border-gray-100">
+                                    <i class="fa-solid fa-face-id text-3xl text-brand-blue"></i>
+                                </div>
+                                <h3 class="text-sm font-black text-black tracking-tight">Biometric Scan</h3>
+                                <p class="text-[10px] text-gray-500 mt-1 leading-relaxed">Verifying security signatures with minicabs.co.uk secure local link...</p>
+                                
+                                <div class="h-1 bg-gray-100 rounded-full my-4 overflow-hidden relative">
+                                    <div class="h-full bg-brand-green w-1/3 absolute left-0 rounded-full animate-bounce"></div>
+                                </div>
+
+                                <button onclick="confirmFaceIdSuccess()" class="w-full bg-black text-white py-2 rounded-xl text-xs font-bold transition hover:bg-neutral-900">
+                                    Simulate Match
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- MODAL POPUP: Premium Uber-style Vehicle Selector -->
+                        <div id="ride-modal" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end justify-center hidden">
+                            <div class="bg-white rounded-t-[32px] p-5 w-full shadow-2xl border-t border-gray-200 animate-slide-up flex flex-col space-y-3 text-left">
+                                <div class="w-12 h-1 bg-gray-200 rounded-full mx-auto"></div>
+                                
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h3 class="text-sm font-black text-black tracking-tight">Select Vehicle Tier</h3>
+                                        <p class="text-[9px] text-gray-400">Fixed terminal rates. No hidden surcharges.</p>
+                                    </div>
+                                    <span class="bg-brand-green/10 text-brand-green border border-brand-green/20 px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase">TfL Regulated</span>
+                                </div>
+
+                                <!-- Sleek Vehicle Tier List -->
+                                <div class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                                    <!-- UberX standard style -->
+                                    <div onclick="selectVehicle('Eco Standard', '£32.50', '3 mins')" class="vehicle-tier-card p-2.5 rounded-xl border-2 border-black bg-gray-50 flex items-center justify-between cursor-pointer transition">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-car text-black"></i></div>
+                                            <div>
+                                                <div class="text-xs font-black text-black">Eco Standard <span class="text-[9px] text-gray-400 ml-1"><i class="fa-solid fa-user"></i> 4</span></div>
+                                                <div class="text-[9px] text-gray-500">Popular London daily runabouts</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-xs font-black text-black">£32.50</div>
+                                            <div class="text-[8px] text-brand-green">3 mins away</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Comfort Style -->
+                                    <div onclick="selectVehicle('Business Exec', '£44.00', '5 mins')" class="vehicle-tier-card p-2.5 rounded-xl border border-gray-100 hover:bg-gray-50 flex items-center justify-between cursor-pointer transition">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-crown text-gray-700"></i></div>
+                                            <div>
+                                                <div class="text-xs font-black text-gray-800">Business Exec <span class="text-[9px] text-gray-400 ml-1"><i class="fa-solid fa-user"></i> 4</span></div>
+                                                <div class="text-[9px] text-gray-500">Premium saloon cars with extra space</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-xs font-black text-gray-800">£44.00</div>
+                                            <div class="text-[8px] text-gray-400">5 mins away</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- XL style -->
+                                    <div onclick="selectVehicle('XL Group Carry', '£56.50', '6 mins')" class="vehicle-tier-card p-2.5 rounded-xl border border-gray-100 hover:bg-gray-50 flex items-center justify-between cursor-pointer transition">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-van-shuttle text-gray-700"></i></div>
+                                            <div>
+                                                <div class="text-xs font-black text-gray-800">XL Group Carry <span class="text-[9px] text-gray-400 ml-1"><i class="fa-solid fa-user"></i> 6</span></div>
+                                                <div class="text-[9px] text-gray-500">Spacious passenger vans & multi-seaters</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-xs font-black text-gray-800">£56.50</div>
+                                            <div class="text-[8px] text-gray-400">6 mins away</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Summary details of chosen destination -->
+                                <div class="bg-gray-50 rounded-xl p-3 border border-gray-100 flex items-center justify-between text-xs">
+                                    <span class="text-gray-400">Destination Hub:</span>
+                                    <span class="font-black text-black text-right truncate max-w-[180px]" id="selected-terminal-text">Heathrow Terminal 5</span>
+                                </div>
+
+                                <!-- Payment Integration select -->
+                                <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-xl border border-gray-100">
+                                    <div class="flex items-center space-x-2 text-xs font-bold text-black">
+                                        <i class="fa-brands fa-apple-pay text-lg"></i>
+                                        <span>Apple Pay (•••• 9842)</span>
+                                    </div>
+                                    <button onclick="toastMessage('Selected Alternative Payment Card')" class="text-[9px] text-black font-black hover:underline uppercase tracking-wide">Change</button>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3 pt-1">
+                                    <button onclick="toggleRideModal(false)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs py-3 rounded-xl transition">Cancel</button>
+                                    <button onclick="dispatchSuccess()" class="bg-black text-white font-extrabold text-xs py-3 rounded-xl hover:bg-neutral-950 transition tracking-wider uppercase">Order minicab</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Native Screen Home Indicator line -->
+                        <div class="absolute bottom-1.5 inset-x-0 h-1 pointer-events-none flex justify-center z-50">
+                            <div class="w-32 h-[4px] bg-black rounded-full"></div>
+                        </div>
+
+                    </div> <!-- End Screen Content -->
+                </div> <!-- End Phone Mockup -->
+            </div>
+
+            <!-- FIGMA SPECIFICATION AND SPECIFICATION PANEL -->
+            <div class="flex-1 max-w-xl bg-[#14151a] rounded-3xl p-5 border border-gray-800 text-xs flex flex-col justify-between self-stretch">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="bg-brand-green/20 text-brand-green px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider">
+                            Interactive System Specs
+                        </span>
+                        <span class="text-gray-500">• Design Token Library</span>
+                    </div>
+
+                    <h2 class="text-base font-black text-white mb-1.5">Reimagined minicabs.co.uk UX</h2>
+                    <p class="text-gray-400 text-[11px] leading-relaxed mb-4">
+                        We have transformed the original dense, high-contrast grid layouts into a modern, frictionless user interface modeled after Uber's flagship architecture. By cleaning the boundaries, implementing high-fidelity SVG/Vector routes, and standardizing typography around <strong>Plus Jakarta Sans</strong>, we have dramatically streamlined the ride-booking loop.
+                    </p>
+
+                    <!-- Active Spec Inspector tabs -->
+                    <div class="space-y-2.5">
+                        <div class="bg-[#0e0f12] p-3 rounded-xl border border-gray-800 flex items-start space-x-3">
+                            <div class="w-7 h-7 rounded bg-brand-green/10 text-brand-green flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                            <div>
+                                <h4 class="text-[11px] font-bold text-white">Sleek, Flat Surface Layouts</h4>
+                                <p class="text-[10px] text-gray-500">Swapped out heavy custom gradients for neutral flat tiles with single-pixel boundaries (#EBEBEB), matching modern design principles.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#0e0f12] p-3 rounded-xl border border-gray-800 flex items-start space-x-3">
+                            <div class="w-7 h-7 rounded bg-brand-green/10 text-brand-green flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-car"></i></div>
+                            <div>
+                                <h4 class="text-[11px] font-bold text-white">Dynamic Vehicle Tier Selectors</h4>
+                                <p class="text-[10px] text-gray-500">Unified dispatch confirmation screens with interactive standard, exec, and group-carry vehicle choices containing real-time ETA countdown tags.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#0e0f12] p-3 rounded-xl border border-gray-800 flex items-start space-x-3">
+                            <div class="w-7 h-7 rounded bg-brand-green/10 text-brand-green flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-star"></i></div>
+                            <div>
+                                <h4 class="text-[11px] font-bold text-white">Frictionless Favourites Access</h4>
+                                <p class="text-[10px] text-gray-500">Introduced customizable quick-book shortcuts on the main dashboard tab, triggering booking drawers in exactly one press.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-gray-850 flex items-center justify-between">
+                    <div class="flex items-center space-x-1">
+                        <span class="w-2 h-2 rounded-full bg-brand-green"></span>
+                        <span class="text-gray-500 text-[10px]">Viewport: iPhone 14 Pro</span>
+                    </div>
+                    <button onclick="resetPrototype()" class="text-brand-green font-bold hover:underline uppercase text-[9px] tracking-wider"><i class="fa-solid fa-rotate-left mr-1"></i> Restart Workspace Flow</button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RIGHT PANEL: Dynamic Figma Inspector Panel -->
+        <section class="w-full lg:w-72 bg-[#14151a] border-l border-gray-800 flex flex-col select-none text-xs">
+            <div class="p-3 border-b border-gray-800 flex items-center justify-between">
+                <span class="font-semibold text-gray-400 tracking-wide text-[10px] uppercase">Figma Properties</span>
+                <span class="text-gray-500 font-mono text-[9px]">Inspect</span>
+            </div>
+
+            <!-- Dynamic attributes shown here -->
+            <div class="p-4 space-y-4">
+                <div>
+                    <span class="text-[10px] text-gray-500 font-bold block mb-2 uppercase">Selected Element Frame</span>
+                    <div class="grid grid-cols-2 gap-2 text-[10px] font-mono">
+                        <div class="bg-[#0e0f12] p-2 rounded-lg border border-gray-800">
+                            <span class="text-gray-600 block text-[8px] uppercase">Width</span>
+                            <span class="text-white" id="inspect-width">375px</span>
+                        </div>
+                        <div class="bg-[#0e0f12] p-2 rounded-lg border border-gray-800">
+                            <span class="text-gray-600 block text-[8px] uppercase">Height</span>
+                            <span class="text-white">812px</span>
+                        </div>
+                        <div class="bg-[#0e0f12] p-2 rounded-lg border border-gray-800">
+                            <span class="text-gray-600 block text-[8px] uppercase">X Position</span>
+                            <span class="text-white">5,420px</span>
+                        </div>
+                        <div class="bg-[#0e0f12] p-2 rounded-lg border border-gray-800">
+                            <span class="text-gray-600 block text-[8px] uppercase">Y Position</span>
+                            <span class="text-white">1,240px</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="h-[1px] bg-gray-850"></div>
+
+                <!-- Dynamic CSS parameters -->
+                <div>
+                    <span class="text-[10px] text-gray-500 font-bold block mb-2 uppercase text-xs">CSS Code Export</span>
+                    <div class="bg-[#0e0f12] p-3 rounded-xl border border-gray-800 font-mono text-[9px] text-[#e5c07b] space-y-1 overflow-x-auto select-all">
+                        <div class="text-purple-400">.screen-artboard {</div>
+                        <div class="pl-3 text-emerald-400">display: <span class="text-white">flex;</span></div>
+                        <div class="pl-3 text-emerald-400">border-radius: <span class="text-white" id="inspect-radius">42px;</span></div>
+                        <div class="pl-3 text-emerald-400">font-family: <span class="text-white">'Plus Jakarta Sans';</span></div>
+                        <div class="pl-3 text-emerald-400">background: <span class="text-white" id="inspect-color">#fafafa;</span></div>
+                        <div class="text-purple-400">}</div>
+                    </div>
+                </div>
+
+                <div class="h-[1px] bg-gray-850"></div>
+
+                <!-- Colors & Variables section -->
+                <div>
+                    <span class="text-[10px] text-gray-500 font-bold block mb-2 uppercase">Local Variables Used</span>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-400">--brand-main:</span>
+                            <span class="font-mono text-[10px] text-white bg-gray-800 px-1.5 py-0.5 rounded">#0D3276</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-400">--brand-green:</span>
+                            <span class="font-mono text-[10px] text-white bg-gray-800 px-1.5 py-0.5 rounded">#76BC21</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-400">--text-black:</span>
+                            <span class="font-mono text-[10px] text-white bg-gray-800 px-1.5 py-0.5 rounded">#000000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Interactive script components for mock actions -->
+    <script>
+        // Design specifications that update in figma inspector when artboards switch
+        const artboardInspectData = {
+            onboarding1: { color: '#000000', radius: '42px', active: 'Active' },
+            onboarding2: { color: '#000000', radius: '42px', active: 'Active' },
+            onboarding3: { color: '#000000', radius: '42px', active: 'Active' },
+            login: { color: '#fafafa', radius: '42px', active: 'Active' },
+            register: { color: '#fafafa', radius: '42px', active: 'Active' },
+            resetpass: { color: '#fafafa', radius: '42px', active: 'Active' },
+            mainmap: { color: '#ebebeb', radius: '42px', active: 'Active' },
+            airportbooking: { color: '#fafafa', radius: '42px', active: 'Active' },
+            recentsearch: { color: '#fafafa', radius: '42px', active: 'Active' },
+            profilesettings: { color: '#fafafa', radius: '42px', active: 'Active' },
+            favouriteplaces: { color: '#fafafa', radius: '42px', active: 'Active' }
+        };
+
+        // Switch Artboard Simulator
+        function switchScreen(screenId) {
+            // Hide all screen components
+            const screens = document.querySelectorAll('.screen-view');
+            screens.forEach(s => s.classList.add('hidden'));
+
+            // Show active screen
+            const activeScreen = document.getElementById('screen-' + screenId);
+            if(activeScreen) {
+                activeScreen.classList.remove('hidden');
+            }
+
+            // Update figma parameters panel
+            const meta = artboardInspectData[screenId] || { color: '#fafafa', radius: '42px' };
+            document.getElementById('inspect-color').textContent = meta.color;
+            document.getElementById('inspect-radius').textContent = meta.radius;
+
+            // Update Left Spec active states
+            const menuButtons = document.querySelectorAll('#screens-list button');
+            menuButtons.forEach(btn => {
+                btn.classList.remove('text-white', 'bg-[#1e2026]');
+                btn.classList.add('text-gray-400');
+                // Remove existing status indicators
+                const badge = btn.querySelector('span:last-child');
+                if(badge && badge.textContent === 'Active') {
+                    badge.remove();
+                }
+            });
+
+            const currentActiveBtn = document.getElementById('btn-' + screenId);
+            if(currentActiveBtn) {
+                currentActiveBtn.classList.remove('text-gray-400');
+                currentActiveBtn.classList.add('text-white', 'bg-[#1e2026]');
+                
+                // Add status active flag
+                const activeSpan = document.createElement('span');
+                activeSpan.className = 'text-[9px] bg-brand-green/20 text-brand-green px-1 rounded';
+                activeSpan.textContent = 'Active';
+                currentActiveBtn.appendChild(activeSpan);
+            }
+        }
+
+        // Face ID Modal Switchers
+        function triggerFaceId() {
+            const modal = document.getElementById('faceid-modal');
+            modal.classList.remove('hidden');
+        }
+
+        function confirmFaceIdSuccess() {
+            const modal = document.getElementById('faceid-modal');
+            modal.classList.add('hidden');
+            toastMessage('Face ID Match Confirmed!');
+            setTimeout(() => {
+                switchScreen('mainmap');
+            }, 600);
+        }
+
+        // Toast Messages
+        function toastMessage(text) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            toastText.textContent = text;
+            
+            // Pop Toast up
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        // Side Menu Drawer logic
+        function toggleSidebar(open) {
+            const drawer = document.getElementById('side-drawer');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (open) {
+                drawer.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                drawer.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        // Airport & Terminal Selection interaction
+        function selectTerminal(terminalName) {
+            const displayField = document.getElementById('selected-terminal-text');
+            displayField.textContent = terminalName;
+            toggleRideModal(true);
+        }
+
+        // Vehicle selector highlight state update
+        function selectVehicle(tierName, price, eta) {
+            const cards = document.querySelectorAll('.vehicle-tier-card');
+            cards.forEach(card => {
+                card.classList.remove('border-black', 'bg-gray-50');
+                card.classList.add('border-gray-100');
+            });
+
+            // Target highlighted card based on click event source
+            const activeCard = event.currentTarget;
+            activeCard.classList.remove('border-gray-100');
+            activeCard.classList.add('border-black', 'bg-gray-50');
+            
+            toastMessage(`Selected tier: ${tierName} (${price})`);
+        }
+
+        function toggleRideModal(open) {
+            const modal = document.getElementById('ride-modal');
+            if(open) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function dispatchSuccess() {
+            toggleRideModal(false);
+            toastMessage('minicab Dispatched Successfully!');
+            setTimeout(() => {
+                toastMessage('Driver arriving in 3 mins.');
+            }, 2800);
+        }
+
+        function resetPrototype() {
+            switchScreen('onboarding1');
+            toastMessage('Prototype reset to page 1');
+        }
+
+        // Auto update local mock clocks
+        function updateTime() {
+            const timeSpan = document.getElementById('ios-time');
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            timeSpan.textContent = hours + ':' + minutes;
+        }
+        setInterval(updateTime, 10000);
+        updateTime();
+    </script>
+</body>
+</html>
