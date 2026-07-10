@@ -1,0 +1,700 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Car, MapPin, Plane, ArrowRight, ArrowLeft, User, List, Clock, 
+  Shield, CheckCircle2, Briefcase, Phone, Lock, ChevronRight, ChevronLeft,
+  Map, Train, Heart, Search, Calendar, CreditCard, Crosshair, X, Menu,
+  EyeOff, Plus, Route, CheckSquare, Info, Tag, LogOut, Ticket
+} from 'lucide-react';
+
+const MapBackground = ({ variant = 'default', animate = false }) => {
+  return (
+    <div className="absolute inset-0 z-0 bg-[#e5e9f0] overflow-hidden pointer-events-none">
+      <svg className="w-full h-full opacity-60" xmlns="http://www.w3.org/2000/svg">
+        <path d="M-50 400 C 100 380, 200 450, 400 420 S 450 350, 500 360" fill="none" stroke="#a5c9eb" strokeWidth="40" strokeLinecap="round"/>
+        <line x1="50" y1="0" x2="100" y2="800" stroke="#ffffff" strokeWidth="8" />
+        <line x1="300" y1="0" x2="250" y2="800" stroke="#ffffff" strokeWidth="6" />
+        <line x1="0" y1="200" x2="500" y2="250" stroke="#ffffff" strokeWidth="8" />
+        <line x1="0" y1="550" x2="500" y2="520" stroke="#ffffff" strokeWidth="6" />
+        <rect x="20" y="80" width="80" height="90" rx="10" fill="#cbe3bd" />
+        <rect x="280" y="100" width="120" height="70" rx="10" fill="#cbe3bd" />
+        
+        {variant === 'tracking' && (
+          <>
+            <path d="M 50,200 L 300,200 L 250,550" fill="none" stroke="#0d3276" strokeWidth="5" strokeLinecap="round" strokeDasharray="8 8" />
+            <path d="M 50,200 L 300,200 L 250,550" fill="none" stroke="#76bc21" strokeWidth="5" strokeLinecap="round" strokeDasharray="1000" strokeDashoffset="1000" className={animate ? "animate-[dash_8s_ease-out_forwards]" : ""} />
+          </>
+        )}
+      </svg>
+      <style>{`
+        @keyframes dash { to { stroke-dashoffset: 0; } }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+      `}</style>
+    </div>
+  );
+};
+
+const CarSilhouette = ({ type, color, opacity }) => {
+  if (type === 'saloon') return (
+    <svg className="w-16 h-10" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 32H85C88 32 92 30 92 25C92 20 84 18 78 18C74 18 68 12 60 12H35C28 12 22 18 18 18C12 18 6 20 6 25C6 30 12 32 15 32Z" fill={color} fillOpacity={opacity}/>
+      <path d="M15 32C12 32 6 30 6 25C6 20 12 18 18 18C22 18 28 12 35 12H60C68 12 74 18 78 18C84 18 92 20 92 25C92 30 88 32 85 32H15Z" stroke={color} strokeWidth="2.5" strokeLinecap="round"/>
+      <circle cx="25" cy="32" r="6" fill="#f8fafc" stroke={color} strokeWidth="2.5"/>
+      <circle cx="75" cy="32" r="6" fill="#f8fafc" stroke={color} strokeWidth="2.5"/>
+      <path d="M36 14H48V20H32C34 17 35 15 36 14Z" fill={color}/>
+      <path d="M52 14H61C60 16 57 20 54 20H52V14Z" fill={color}/>
+    </svg>
+  );
+  if (type === 'estate') return (
+    <svg className="w-16 h-10" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 30H88C91 30 94 28 94 24C94 20 90 14 80 14H28C22 14 16 18 12 18C7 18 4 21 4 24C4 28 8 30 12 30Z" fill={color} fillOpacity={opacity}/>
+      <path d="M12 30C8 30 4 28 4 24C4 21 7 18 12 18C16 18 22 14 28 14H80C90 14 94 20 94 24C94 28 91 30 88 30H12Z" stroke={color} strokeWidth="2.5" strokeLinecap="round"/>
+      <circle cx="25" cy="30" r="6" fill="#f8fafc" stroke={color} strokeWidth="2.5"/>
+      <circle cx="75" cy="30" r="6" fill="#f8fafc" stroke={color} strokeWidth="2.5"/>
+      <path d="M30 16H48V21H24C26 18 28 17 30 16Z" fill={color}/>
+      <path d="M52 16H74C72 18 64 21 58 21H52V16Z" fill={color}/>
+    </svg>
+  );
+  return (
+    <svg className="w-16 h-10" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 31H84C88 31 92 29 92 24C92 19 83 17 76 17C72 17 66 11 58 11H34C27 11 21 17 17 17C11 17 6 19 6 24C6 29 11 31 16 31Z" fill={color} fillOpacity={opacity}/>
+      <path d="M16 31C11 31 6 29 6 24C6 19 11 17 17 17C21 17 27 11 34 11H58C66 11 72 17 76 17C83 17 92 19 92 24C92 29 88 31 84 31H16Z" stroke={color} strokeWidth="2.5" strokeLinecap="round"/>
+      <circle cx="25" cy="31" r="6" fill="#f8fafc" stroke={color} strokeWidth="2.5"/>
+      <circle cx="75" cy="31" r="6" fill="#f8fafc" stroke={color} strokeWidth="2.5"/>
+      <path d="M35 13H48V19H29C31 16 33 14 35 13Z" fill={color}/>
+      <path d="M52 13H59C58 15 56 19 53 19H52V13Z" fill={color}/>
+    </svg>
+  );
+}
+
+const App = () => {
+  // Global Navigation State
+  const [currentScreen, setCurrentScreen] = useState('onboarding');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: '' });
+  
+  // Booking Data State
+  const [selectedTerminal, setSelectedTerminal] = useState('');
+  const [selectedVehicle, setSelectedVehicle] = useState({ 
+    name: 'Saloon Car', price: '£45.00', pax: 4, bags: 2, type: 'saloon' 
+  });
+  const [trackingEta, setTrackingEta] = useState('3 mins');
+  const [trackingStatus, setTrackingStatus] = useState('Driver En-Route');
+  const [trackingAnimation, setTrackingAnimation] = useState(false);
+
+  // Hook Rule Fix: All hooks are called at the top level unconditionally.
+  useEffect(() => {
+    let t1, t2;
+    if (currentScreen === 'tracking') {
+      setTrackingAnimation(true);
+      setTrackingEta('3 mins');
+      setTrackingStatus('Driver En-Route');
+      
+      t1 = setTimeout(() => {
+        setTrackingEta('1 min');
+      }, 4000);
+      
+      t2 = setTimeout(() => {
+        setTrackingEta('Arriving!');
+        setTrackingStatus('Arrived at Pick-up');
+        showToast('David has arrived at your location');
+      }, 8000);
+    } else {
+      setTrackingAnimation(false);
+    }
+    
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [currentScreen]);
+
+  // Helpers
+  const navigate = (screen) => {
+    setCurrentScreen(screen);
+    setIsSidebarOpen(false);
+    window.scrollTo(0,0);
+  };
+
+  const showToast = (message) => {
+    setToast({ show: true, message });
+    setTimeout(() => setToast({ show: false, message: '' }), 2500);
+  };
+
+  const handleSelectTerminal = (term) => {
+    setSelectedTerminal(term);
+    navigate('vehicles');
+  };
+
+  const renderOnboarding = () => (
+    <div className="h-full flex flex-col justify-between bg-gradient-to-b from-[#0d3276] via-[#123e8f] to-[#1e4fae] text-white pt-14 pb-8 px-6 relative z-10">
+      <div className="flex justify-between items-center">
+        <div className="bg-white/10 px-2 py-0.5 rounded text-[11px] font-mono border border-white/10">minicabs.co.uk</div>
+        <button onClick={() => navigate('login')} className="text-[#76bc21] font-bold text-xs uppercase tracking-wider hover:underline">Skip</button>
+      </div>
+
+      <div className="my-auto flex flex-col items-center text-center">
+        <div className="relative w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg shadow-blue-950/40 mb-4 animate-float">
+          <div className="w-16 h-16 bg-[#0d3276] rounded-full flex items-center justify-center">
+            <Car size={32} className="text-[#76bc21]" />
+          </div>
+          <div className="absolute -bottom-2 bg-[#76bc21] text-[#0d3276] font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow">MINI</div>
+        </div>
+        <h2 className="text-3xl font-extrabold tracking-tight mb-2">minicabs<span className="text-[#76bc21]">.co.uk</span></h2>
+        <p className="text-white/80 text-xs px-4 mb-6 leading-relaxed">The smarter, faster way to traverse London. No hidden fees, luxury as standard.</p>
+        
+        <span className="text-[11px] uppercase tracking-widest font-bold text-[#76bc21] mb-4">Why Book With Us</span>
+        
+        <div className="grid grid-cols-2 gap-3 w-full max-w-xs mt-2">
+          {[
+            { icon: Lock, text: 'Fixed Fares' },
+            { icon: CheckCircle2, text: 'No Surcharge' },
+            { icon: Briefcase, text: 'Business Hub' },
+            { icon: Phone, text: '24h Control' }
+          ].map((item, i) => (
+            <div key={i} className="bg-white/5 p-3 rounded-2xl border border-white/10 flex flex-col items-center">
+              <div className="w-8 h-8 rounded-full bg-[#76bc21]/20 text-[#76bc21] flex items-center justify-center mb-1">
+                <item.icon size={14} />
+              </div>
+              <span className="text-[11px] font-bold">{item.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col space-y-4">
+        <div className="flex justify-center space-x-1.5">
+          <span className="w-6 h-1.5 rounded-full bg-[#76bc21]"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+        </div>
+        <button onClick={() => navigate('login')} className="w-full bg-white text-[#0d3276] hover:bg-gray-100 py-3.5 px-4 rounded-xl font-bold text-sm tracking-wide transition flex items-center justify-center shadow-lg">
+          Get Started <ArrowRight size={16} className="ml-2 text-[#76bc21]" />
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderLogin = () => (
+    <div className="h-full flex flex-col bg-[#f8fafc] text-gray-800 pt-12 pb-6 px-5 relative z-10 overflow-y-auto">
+      <div className="flex justify-between items-center h-8">
+        <button onClick={() => navigate('onboarding')} className="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center shadow-sm text-gray-600"><ChevronLeft size={16} /></button>
+        <span className="font-bold text-sm text-[#0d3276]">Login</span>
+        <div className="flex space-x-1.5">
+          <a href="#" className="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center shadow-sm text-[#76bc21]"><Phone size={14} /></a>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <h1 className="text-2xl font-extrabold text-[#0d3276] leading-tight">Welcome Back</h1>
+        <p className="text-xs text-gray-500 mt-1">Access rapid microcab options in seconds</p>
+      </div>
+
+      <div className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 flex-1 my-4 flex flex-col justify-between">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-[10px] uppercase tracking-widest font-extrabold text-gray-400 mb-1.5">Registered Mobile</label>
+            <div className="relative flex items-center">
+              <span className="absolute left-3 text-xs font-bold text-gray-400 border-r border-gray-200 pr-2">+44</span>
+              <input type="tel" defaultValue="7907264443" className="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-3 pl-14 pr-4 text-xs font-semibold focus:border-[#0d3276] focus:ring-1 focus:ring-[#0d3276] outline-none transition" />
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-between items-center mb-1.5">
+              <label className="block text-[10px] uppercase tracking-widest font-extrabold text-gray-400">Password</label>
+              <span onClick={() => navigate('reset')} className="text-[10px] font-bold text-[#0d3276] cursor-pointer hover:underline">Forgot password?</span>
+            </div>
+            <div className="relative">
+              <input type="password" defaultValue="password123" className="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-3 pl-4 pr-10 text-xs font-semibold focus:border-[#0d3276] focus:ring-1 focus:ring-[#0d3276] outline-none transition" />
+              <span className="absolute right-3 top-3.5 text-gray-400 text-xs cursor-pointer"><EyeOff size={14} /></span>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 space-y-3">
+          <button onClick={() => navigate('map')} className="w-full bg-[#0d3276] text-white hover:bg-opacity-95 py-3.5 rounded-xl text-xs font-extrabold shadow-md shadow-[#0d3276]/20 flex items-center justify-center transition">
+            Log In to Account
+          </button>
+          <button onClick={() => navigate('register')} className="w-full bg-gray-100 text-gray-700 hover:bg-gray-200 py-3.5 rounded-xl text-xs font-bold transition">
+            Create New Account
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderRegister = () => (
+    <div className="h-full flex flex-col bg-[#f8fafc] text-gray-800 pt-12 pb-6 px-5 relative z-10 overflow-y-auto">
+      <div className="flex justify-between items-center h-8">
+        <button onClick={() => navigate('login')} className="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center shadow-sm text-gray-600"><ChevronLeft size={16} /></button>
+        <span className="font-bold text-sm text-[#0d3276]">Sign Up</span>
+        <a href="#" className="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center shadow-sm text-[#76bc21]"><Phone size={14} /></a>
+      </div>
+      <div className="mt-4">
+        <h1 className="text-2xl font-extrabold text-[#0d3276] leading-tight">Create Account</h1>
+        <p className="text-xs text-gray-500 mt-1">Get access to fast rides across Greater London</p>
+      </div>
+      <div className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 flex-1 my-4 overflow-y-auto space-y-4">
+        {['Full Name', 'Email Address'].map((label) => (
+          <div key={label}>
+            <label className="block text-[10px] uppercase tracking-widest font-extrabold text-gray-400 mb-1.5">{label}</label>
+            <input type={label === 'Email Address' ? 'email' : 'text'} placeholder={`Enter ${label.toLowerCase()}`} className="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-3 px-4 text-xs font-semibold focus:border-[#0d3276] outline-none transition" />
+          </div>
+        ))}
+        <div>
+          <label className="block text-[10px] uppercase tracking-widest font-extrabold text-gray-400 mb-1.5">Mobile Number</label>
+          <div className="relative flex items-center">
+             <span className="absolute left-3 flex items-center space-x-1 text-xs font-bold text-gray-500 border-r border-gray-200 pr-2"><span>🇬🇧</span><span>+44</span></span>
+             <input type="tel" placeholder="Mobile phone" className="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-3 pl-16 pr-4 text-xs font-semibold focus:border-[#0d3276] outline-none transition" />
+          </div>
+        </div>
+        <div>
+           <label className="block text-[10px] uppercase tracking-widest font-extrabold text-gray-400 mb-1.5">Password</label>
+           <input type="password" placeholder="Create password" className="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-3 px-4 text-xs font-semibold focus:border-[#0d3276] outline-none transition" />
+        </div>
+        <button onClick={() => navigate('map')} className="w-full bg-[#0d3276] text-white hover:bg-opacity-95 py-3.5 rounded-xl text-xs font-extrabold shadow-md shadow-[#0d3276]/20 transition mt-4">
+          Register Account
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderMap = () => (
+    <div className="h-full bg-gray-100 text-gray-800 relative overflow-hidden flex flex-col justify-between z-10">
+      <MapBackground />
+      
+      {/* Floating Header Overlay */}
+      <div className="absolute top-12 inset-x-0 px-4 z-20 flex justify-between items-center">
+        <button onClick={() => setIsSidebarOpen(true)} className="w-10 h-10 rounded-full bg-white shadow-lg border border-gray-200/60 flex items-center justify-center text-[#0d3276] hover:text-[#76bc21] transition">
+          <Menu size={16} />
+        </button>
+        <div className="bg-white/95 backdrop-blur shadow-lg px-4 py-2 rounded-full border border-gray-100 flex items-center space-x-2">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#76bc21] animate-pulse"></div>
+          <span className="text-[10px] uppercase tracking-wider font-extrabold text-[#0d3276]">Book Your Journey</span>
+        </div>
+        <button onClick={() => navigate('profile')} className="w-10 h-10 rounded-full bg-[#0d3276] text-white shadow-lg flex items-center justify-center text-xs font-bold border-2 border-[#76bc21]">
+          AS
+        </button>
+      </div>
+
+      <div className="absolute top-[42%] left-[48%] -translate-x-1/2 -translate-y-1/2 z-10">
+        <div className="relative flex flex-col items-center">
+          <div className="bg-[#0d3276] text-white p-2 rounded-full shadow-lg border-2 border-[#76bc21] flex items-center justify-center w-10 h-10 animate-bounce">
+            <Car size={16} className="text-[#76bc21]" />
+          </div>
+          <div className="w-2.5 h-2.5 bg-[#0d3276] rounded-full border border-white mt-1 shadow-md"></div>
+        </div>
+      </div>
+
+      <div className="absolute right-4 bottom-[280px] z-20 flex flex-col space-y-2">
+        <button onClick={() => showToast('Re-centering on GPS position...')} className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 border border-gray-100"><Crosshair size={16} /></button>
+        <button onClick={() => navigate('favorites')} className="w-10 h-10 rounded-full bg-[#76bc21] text-[#0d3276] shadow-md flex items-center justify-center border border-white"><Heart size={16} /></button>
+      </div>
+
+      {/* Bottom Sheet Drawer */}
+      <div className="absolute bottom-0 inset-x-0 bg-white rounded-t-[32px] shadow-2xl z-20 border-t border-gray-100 p-5 pt-4 flex flex-col space-y-4">
+        <div className="w-12 h-1 bg-gray-200 rounded-full mx-auto mb-1"></div>
+        <div>
+          <h3 className="text-sm font-extrabold text-[#0d3276]">Where can we take you?</h3>
+          <p className="text-[11px] text-gray-500">Instant pick-ups from any Greater London borough</p>
+        </div>
+        <div className="space-y-2.5">
+          <button onClick={() => navigate('recent')} className="w-full bg-gray-50 border border-gray-200 hover:border-[#0d3276]/40 rounded-2xl p-3 flex items-center justify-between transition text-left">
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 rounded-full bg-[#76bc21]"></div>
+              <div>
+                <div className="text-[10px] uppercase tracking-wider font-bold text-gray-400">Current Pick-Up</div>
+                <div className="text-xs font-semibold text-gray-800">Your Current Location</div>
+              </div>
+            </div>
+            <Crosshair size={16} className="text-[#0d3276]" />
+          </button>
+          <button onClick={() => navigate('search')} className="w-full bg-gray-50 border border-gray-200 hover:border-[#0d3276]/40 rounded-2xl p-3 flex items-center justify-between transition text-left">
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 rounded-full bg-red-500"></div>
+              <div>
+                <div className="text-[10px] uppercase tracking-wider font-bold text-gray-400">Drop-Off Destination</div>
+                <div className="text-xs font-semibold text-gray-400">Search airport, terminal or postcode...</div>
+              </div>
+            </div>
+            <ChevronRight size={16} className="text-gray-400" />
+          </button>
+        </div>
+        <div className="pt-1.5 flex items-center justify-between">
+          <span className="text-[11px] font-bold text-gray-500">Recent Shortcuts</span>
+          <button onClick={() => navigate('favorites')} className="text-[11px] font-bold text-[#0d3276] flex items-center"><Plus size={12} className="mr-1"/> Manage</button>
+        </div>
+        <div className="grid grid-cols-2 gap-2 pb-2">
+          <button onClick={() => handleSelectTerminal('Heathrow (T5)')} className="bg-gray-50 border border-gray-100 hover:bg-[#0d3276]/5 rounded-xl p-2.5 flex items-center space-x-2 text-left transition">
+            <Plane size={14} className="text-[#0d3276] shrink-0" />
+            <div className="overflow-hidden">
+              <div className="text-[10px] font-bold text-gray-800 truncate">Heathrow (T5)</div>
+              <div className="text-[8px] text-gray-400 truncate">Airport Hub</div>
+            </div>
+          </button>
+          <button onClick={() => navigate('recent')} className="bg-gray-50 border border-gray-100 hover:bg-[#0d3276]/5 rounded-xl p-2.5 flex items-center space-x-2 text-left transition">
+            <Train size={14} className="text-[#0d3276] shrink-0" />
+            <div className="overflow-hidden">
+              <div className="text-[10px] font-bold text-gray-800 truncate">Liverpool Street</div>
+              <div className="text-[8px] text-gray-400 truncate">Station Link</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      {/* Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div className="absolute inset-0 z-50 flex">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setIsSidebarOpen(false)}></div>
+          <div className="w-[280px] bg-white h-full relative z-10 flex flex-col shadow-2xl animate-[slideRight_0.3s_ease-out]">
+            <div className="bg-gradient-to-br from-[#0d3276] to-[#1e4fae] text-white p-5 pt-12 relative">
+              <button onClick={() => setIsSidebarOpen(false)} className="absolute top-4 right-4 text-white/80 hover:text-white"><X size={18}/></button>
+              <div className="flex items-center space-x-2 mb-4 mt-2">
+                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center"><Car size={16} className="text-[#0d3276]"/></div>
+                <span className="font-black text-sm tracking-wider">minicabs<span className="text-[#76bc21]">.co.uk</span></span>
+              </div>
+              <div className="flex items-center space-x-3 mt-4">
+                <div className="w-10 h-10 rounded-full bg-[#76bc21] text-[#0d3276] font-black flex items-center justify-center shadow-md">AS</div>
+                <div><div className="text-xs font-bold">AliM Sofi</div><div className="text-[9px] text-white/70">ali.alim@gmail.com</div></div>
+              </div>
+            </div>
+            <div className="p-3 space-y-1">
+              {[
+                { name: 'Manage Profile', icon: User, route: 'profile' },
+                { name: 'My Bookings', icon: CheckSquare, route: 'recent' },
+                { name: 'Favourite Places', icon: Heart, route: 'favorites' },
+                { name: 'App Intro & Features', icon: Info, route: 'onboarding' }
+              ].map(item => (
+                <button key={item.name} onClick={() => navigate(item.route)} className="w-full flex items-center space-x-3.5 px-4 py-3 rounded-xl hover:bg-gray-50 text-gray-700 transition text-left">
+                  <item.icon size={16} className="text-[#0d3276]" />
+                  <span className="text-xs font-bold">{item.name}</span>
+                </button>
+              ))}
+              <div className="h-[1px] bg-gray-100 my-2"></div>
+              <button onClick={() => showToast('Promo code copied!')} className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-green-50/50 hover:bg-green-50 border border-green-100 text-left transition">
+                <div className="flex items-center space-x-3.5">
+                  <Tag size={16} className="text-[#76bc21]" />
+                  <span className="text-xs font-bold text-[#0d3276]">Share 20% Discount</span>
+                </div>
+                <span className="text-[9px] bg-[#76bc21] text-[#0d3276] px-1.5 py-0.5 rounded font-extrabold uppercase">Share</span>
+              </button>
+            </div>
+            <div className="mt-auto p-4 border-t border-gray-100 flex items-center justify-between">
+              <button onClick={() => navigate('login')} className="text-xs font-bold text-red-500 hover:text-red-600 transition flex items-center"><LogOut size={14} className="mr-2"/> Log Out</button>
+              <span className="text-[9px] text-gray-400 font-mono">v3.42 (TfL Link)</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  const renderSearch = () => (
+    <div className="h-full bg-[#f8fafc] text-gray-800 pt-12 pb-4 px-4 flex flex-col z-10 relative">
+      <div className="flex justify-between items-center h-8">
+        <button onClick={() => navigate('map')} className="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center shadow-sm text-gray-600"><ChevronLeft size={16} /></button>
+        <span className="font-bold text-sm text-[#0d3276]">Airports & Terminals</span>
+        <div className="w-8 h-8 rounded-full bg-[#0d3276]/10 flex items-center justify-center text-[#0d3276]"><Plane size={14} /></div>
+      </div>
+      <div className="mt-4 relative mb-3">
+        <Search size={14} className="absolute left-3.5 top-3.5 text-gray-400" />
+        <input type="text" placeholder="e.g. Heathrow Terminal 5" className="w-full bg-white border border-gray-200 shadow-sm rounded-2xl py-3 pl-10 pr-4 text-xs font-semibold focus:border-[#0d3276] outline-none" />
+      </div>
+      <div className="grid grid-cols-4 gap-1.5 mb-3">
+        {[
+          { text: 'Recent', icon: Clock, route: 'recent' },
+          { text: 'Airports', icon: Plane, route: 'search', active: true },
+          { text: 'Stations', icon: Train, route: 'search' },
+          { text: 'Saved', icon: Heart, route: 'favorites' }
+        ].map(btn => (
+          <button key={btn.text} onClick={() => navigate(btn.route)} className={`p-2 rounded-xl text-center border text-[10px] font-bold flex flex-col items-center justify-center ${btn.active ? 'bg-[#0d3276] text-white border-[#0d3276]' : 'bg-white hover:bg-gray-100 border-gray-100 text-gray-500'}`}>
+            <btn.icon size={14} className={`mb-1 ${btn.active ? 'text-[#76bc21]' : ''}`} /> {btn.text}
+          </button>
+        ))}
+      </div>
+      <div className="flex-1 overflow-y-auto space-y-2 pr-1">
+        <div className="text-[10px] text-gray-400 uppercase tracking-wider font-extrabold px-1 mb-1 mt-2">Greater London Hubs</div>
+        {[
+          'London Heathrow (LHR) - Terminal 1', 'London Heathrow (LHR) - Terminal 2', 
+          'London Heathrow (LHR) - Terminal 3', 'London Heathrow (LHR) - Terminal 5',
+          'London Gatwick (LGW) - North Terminal'
+        ].map((term, i) => (
+          <button key={i} onClick={() => handleSelectTerminal(term)} className="w-full bg-white hover:bg-blue-50/40 p-3 rounded-2xl border border-gray-100 flex items-center justify-between text-left transition">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center"><Plane size={14} /></div>
+              <div>
+                <div className="text-xs font-extrabold text-gray-800">{term.split(' - ')[0]}</div>
+                <div className="text-[10px] text-gray-400">{term.split(' - ')[1]} Hub</div>
+              </div>
+            </div>
+            <ChevronRight size={14} className="text-gray-300" />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderVehicles = () => {
+    const vehicles = [
+      { name: 'Saloon Car', price: '£45.00', pax: 4, bags: 2, type: 'saloon' },
+      { name: 'Estate Car', price: '£55.50', pax: 4, bags: 3, type: 'estate' },
+      { name: 'Executive', price: '£85.00', pax: 3, bags: 2, type: 'exec' }
+    ];
+
+    return (
+      <div className="h-full flex flex-col bg-[#f8fafc] relative z-10">
+        <div className="h-[22%] relative overflow-hidden bg-[#e2e8f0]">
+          <MapBackground animate={false} />
+          <div className="absolute top-[60px] left-[200px] -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center">
+            <div className="bg-[#0d3276] text-white p-1 rounded-full border-2 border-[#76bc21] flex items-center justify-center w-6 h-6 shadow-sm"><Car size={10} className="text-[#76bc21]" /></div>
+          </div>
+        </div>
+        <div className="flex-1 bg-white rounded-t-3xl flex flex-col justify-between overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.1)] -mt-4 z-20">
+          <div className="bg-[#0d3276] px-5 py-4 flex items-center justify-between text-white">
+            <button onClick={() => navigate('search')} className="hover:opacity-85"><X size={18}/></button>
+            <h2 className="text-sm font-extrabold uppercase tracking-widest text-center flex-1">Select your vehicle</h2>
+            <div className="w-4"></div>
+          </div>
+          <div className="flex-1 overflow-y-auto p-3 py-2 space-y-1.5">
+            {vehicles.map((v) => {
+              const isActive = selectedVehicle.name === v.name;
+              return (
+                <div key={v.name} onClick={() => setSelectedVehicle(v)} className={`flex items-center justify-between p-3 rounded-2xl cursor-pointer transition-all duration-200 ${isActive ? 'bg-[#f8fafc]' : 'hover:bg-gray-50'}`}>
+                  <div className="flex items-center space-x-4">
+                    <div className={`flex items-center justify-center ${isActive ? 'text-[#76bc21]' : 'text-[#0d3276]'}`}>
+                      <CarSilhouette type={v.type} color={isActive ? '#76bc21' : '#0d3276'} opacity={isActive ? "0.2" : "0.15"} />
+                    </div>
+                    <div>
+                      <div className="text-xs font-extrabold text-gray-900 leading-tight">{v.name}</div>
+                      <div className="text-[9px] font-bold flex items-center space-x-2 mt-1">
+                        <span className={`flex items-center gap-1 px-1.5 py-0.5 rounded ${isActive ? 'bg-[#76bc21]/20 text-[#5c9617]' : 'bg-slate-100 text-gray-500'}`}><User size={8}/> {v.pax}</span>
+                        <span className={`flex items-center gap-1 px-1.5 py-0.5 rounded ${isActive ? 'bg-[#76bc21]/20 text-[#5c9617]' : 'bg-slate-100 text-gray-500'}`}><Briefcase size={8}/> {v.bags}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className={`text-sm font-extrabold tracking-tight ${isActive ? 'text-[#0d3276]' : 'text-[#0d3276]'}`}>{v.price}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="p-4 bg-white flex flex-col space-y-3">
+            <button onClick={() => navigate('confirm')} className="w-full bg-[#76bc21] hover:bg-[#5c9617] text-[#0d3276] py-4 px-6 rounded-2xl flex items-center justify-between transition-all transform active:scale-95 shadow-md shadow-[#76bc21]/20">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-[#0d3276] text-[#76bc21] rounded-xl flex items-center justify-center"><ChevronRight size={16} /></div>
+                <span className="font-extrabold text-xs uppercase tracking-widest text-[#0d3276]">Confirm Booking</span>
+              </div>
+              <span className="font-black text-sm text-[#0d3276]">{selectedVehicle.price}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderConfirm = () => (
+    <div className="h-full flex flex-col bg-[#f8fafc] text-gray-900 pt-10 relative overflow-hidden font-sans z-10">
+      <div className="relative bg-[#0d3276] text-white px-4 py-3.5 flex flex-col justify-between z-10">
+        <div className="flex justify-between items-center">
+          <button onClick={() => navigate('vehicles')} className="text-white/80 hover:text-white"><ChevronLeft size={16} /></button>
+          <h2 className="text-sm font-extrabold text-white uppercase tracking-wider">{selectedVehicle.name}</h2>
+          <button onClick={() => navigate('map')} className="text-white/80 hover:text-white"><X size={16} /></button>
+        </div>
+      </div>
+      <div className="h-20 bg-gray-200 relative overflow-hidden pointer-events-none">
+         <MapBackground animate={false} />
+         <div className="absolute top-[40px] left-[200px] -translate-x-1/2 -translate-y-1/2 flex items-center space-x-1 font-mono text-[9px] bg-[#0d3276] text-white px-2 py-0.5 rounded-full">
+             <Route size={10} className="text-[#76bc21]" /> <span>{selectedTerminal.split(' - ')[0]}</span>
+         </div>
+      </div>
+      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        <div className="bg-white p-4 rounded-2xl flex items-start space-x-4 shadow-sm border border-gray-100">
+           <div className="flex flex-col items-center justify-between h-14 pt-1 shrink-0">
+             <div className="w-3 h-3 rounded-full border-2 border-[#76bc21] bg-white"></div>
+             <div className="w-0.5 h-full bg-[#76bc21]"></div>
+             <div className="w-3 h-3 rounded-full bg-[#76bc21]"></div>
+           </div>
+           <div className="flex-1 space-y-3">
+             <div className="flex flex-col">
+               <h4 className="text-xs font-bold text-gray-900 leading-tight">Current Location</h4>
+               <p className="text-[9px] text-gray-400 mt-0.5">London, UK</p>
+             </div>
+             <div className="flex flex-col">
+               <h4 className="text-xs font-bold text-gray-900 leading-tight">{selectedTerminal}</h4>
+               <p className="text-[9px] text-gray-400 mt-0.5">Destination Hub</p>
+             </div>
+           </div>
+        </div>
+        <div className="bg-white p-3.5 rounded-2xl flex items-center justify-between shadow-sm border border-gray-100">
+           <div className="flex items-center space-x-3">
+             <Calendar className="text-[#76bc21]" size={16} />
+             <span className="text-xs font-bold text-gray-800">Right Now (~5 min ETA)</span>
+           </div>
+           <ChevronRight size={14} className="text-gray-300" />
+        </div>
+        <div className="bg-white p-3 rounded-2xl flex items-center justify-between shadow-sm border border-gray-100">
+           <div className="flex items-center space-x-2.5">
+             <CreditCard className="text-[#76bc21]" size={16} />
+             <span className="text-xs font-bold text-gray-900">Apple Pay (•••• 9842)</span>
+           </div>
+           <span className="text-base font-extrabold text-[#0d3276] tracking-tight">{selectedVehicle.price}</span>
+        </div>
+      </div>
+      <div className="p-4 bg-white flex flex-col space-y-3 mt-auto border-t border-gray-100">
+         <button onClick={() => navigate('tracking')} className="w-full bg-[#76bc21] hover:bg-[#5c9617] text-[#0d3276] py-4 px-6 rounded-2xl flex items-center justify-between transition-all transform active:scale-95 shadow-md shadow-[#76bc21]/20">
+             <div className="flex items-center space-x-3">
+                 <div className="w-8 h-8 bg-[#0d3276] text-[#76bc21] rounded-xl flex items-center justify-center text-xs"><Car size={16} className="text-white"/></div>
+                 <span className="font-extrabold text-xs uppercase tracking-widest text-[#0d3276]">Book Journey Now</span>
+             </div>
+             <ChevronRight size={16} className="text-[#0d3276]" />
+         </button>
+      </div>
+    </div>
+  );
+
+  const renderTracking = () => (
+    <div className="h-full bg-gray-100 text-gray-800 relative overflow-hidden flex flex-col justify-between z-10">
+      <MapBackground variant="tracking" animate={trackingAnimation} />
+      
+      <div className="absolute top-[280px] left-[200px] -translate-x-1/2 -translate-y-1/2 z-10">
+        <div className="w-7 h-7 bg-[#76bc21] rounded-full border-2 border-white flex items-center justify-center shadow-md">
+            <span className="w-2.5 h-2.5 bg-black rounded-full"></span>
+        </div>
+      </div>
+
+      <div className={`absolute left-[40%] -translate-x-1/2 -translate-y-1/2 z-20 bg-[#0d3276] text-white p-2 rounded-xl shadow-2xl border-2 border-[#76bc21] transition-all duration-[6s] ease-out ${trackingEta === 'Arriving!' ? 'top-[280px] left-[200px]' : 'top-[240px]'}`}>
+        <Car size={14} className="text-[#76bc21] animate-pulse" />
+      </div>
+
+      <div className="absolute top-12 inset-x-0 px-4 z-20 flex justify-between items-center">
+        <button onClick={() => navigate('map')} className="w-10 h-10 rounded-xl bg-white shadow-xl flex items-center justify-center text-black border border-gray-100"><X size={16}/></button>
+        <div className={`px-4 py-1.5 rounded-full border border-gray-800 flex items-center space-x-2 shadow-xl ${trackingEta === 'Arriving!' ? 'bg-[#76bc21] text-[#0d3276]' : 'bg-[#0d3276] text-white'}`}>
+          <span className={`w-1.5 h-1.5 rounded-full animate-ping ${trackingEta === 'Arriving!' ? 'bg-[#0d3276]' : 'bg-[#76bc21]'}`}></span>
+          <span className="text-[9px] uppercase tracking-widest font-black">{trackingStatus}</span>
+        </div>
+        <div className="w-10 h-10"></div>
+      </div>
+
+      <div className="mt-auto bg-white rounded-t-[32px] p-5 shadow-2xl z-20 border-t border-gray-100 relative">
+        <div className="w-12 h-1 bg-gray-200 rounded-full mx-auto mb-4"></div>
+        <div className="flex justify-between items-center pb-3 mb-3 border-b border-gray-100">
+          <div>
+            <h2 className="text-xl font-black text-black tracking-tight">{trackingEta === 'Arriving!' ? 'Your ride is here!' : `Arriving in ${trackingEta}`}</h2>
+            <p className="text-[9px] text-gray-400 font-bold">David is dispatched & en-route</p>
+          </div>
+          <div className="bg-[#76bc21]/15 text-[#5c9617] font-extrabold text-[10px] px-3 py-1.5 rounded-xl uppercase tracking-wider">Fixed fare</div>
+        </div>
+        <div className="flex items-center justify-between bg-gray-50 p-3 rounded-2xl border border-gray-100">
+          <div className="flex items-center space-x-3">
+            <div className="w-11 h-11 bg-[#0d3276] text-[#76bc21] rounded-xl flex items-center justify-center font-black shadow-inner"><User size={20} /></div>
+            <div>
+              <h4 className="text-xs font-black text-black">David • verified</h4>
+              <p className="text-[9px] text-gray-500">Mercedes Estate Spec</p>
+            </div>
+          </div>
+          <div className="text-right">
+            <span className="block bg-[#0d3276] text-white font-mono text-[11px] font-black px-2.5 py-1 rounded-lg">LG26 XYZ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderProfile = () => (
+    <div className="h-full bg-[#f8fafc] text-gray-800 pt-12 pb-4 px-4 flex flex-col z-10 relative overflow-y-auto">
+      <div className="flex justify-between items-center h-8">
+        <button onClick={() => navigate('map')} className="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center shadow-sm text-gray-600"><ChevronLeft size={16}/></button>
+        <span className="font-bold text-sm text-[#0d3276]">Profile Management</span>
+        <div className="w-8 h-8"></div>
+      </div>
+      <div className="bg-gradient-to-r from-[#0d3276] to-[#1e4fae] rounded-3xl p-5 text-white shadow-md my-4 flex items-center space-x-4">
+        <div className="w-14 h-14 bg-[#76bc21] text-[#0d3276] rounded-full flex items-center justify-center text-lg font-black shadow-lg">AS</div>
+        <div className="flex-1 overflow-hidden">
+          <h2 className="text-base font-bold leading-tight truncate">AliM Sofi</h2>
+          <p className="text-[10px] text-white/70">TfL Verified Passenger Status</p>
+          <div className="mt-1 inline-flex items-center px-2 py-0.5 rounded-full bg-[#76bc21]/20 border border-[#76bc21]/30 text-[9px] text-[#76bc21] font-bold">Account Active</div>
+        </div>
+      </div>
+      <div className="space-y-4 flex-1">
+        <div className="bg-white rounded-3xl p-4 shadow-sm border border-gray-100 space-y-3">
+          <div className="text-[10px] uppercase tracking-widest font-extrabold text-gray-400 mb-1">Personal Details</div>
+          <div><label className="block text-[9px] text-gray-400 font-bold mb-1">Mobile Contact</label><div className="flex justify-between py-1 border-b border-gray-100"><span className="text-xs font-semibold">+917051720629</span><span className="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Verified</span></div></div>
+          <div><label className="block text-[9px] text-gray-400 font-bold mb-1">Full Identity</label><div className="flex justify-between py-1 border-b border-gray-100"><span className="text-xs font-semibold">AliM Sofi</span></div></div>
+          <div><label className="block text-[9px] text-gray-400 font-bold mb-1">Primary Email</label><div className="flex justify-between py-1"><span className="text-xs font-semibold">ali.alim@gmail.com</span></div></div>
+        </div>
+      </div>
+      <div className="mt-4 pt-4 border-t border-gray-200">
+        <button onClick={() => navigate('map')} className="w-full bg-[#0d3276] text-white hover:bg-opacity-95 py-3.5 rounded-2xl text-xs font-extrabold shadow-md transition">Update Profile Settings</button>
+      </div>
+    </div>
+  );
+
+  const renderFavorites = () => (
+    <div className="h-full bg-[#f8fafc] text-gray-800 pt-12 pb-4 px-4 flex flex-col z-10 relative">
+      <div className="flex justify-between items-center h-8">
+        <button onClick={() => navigate('map')} className="w-8 h-8 rounded-full bg-white border border-gray-200/60 flex items-center justify-center shadow-sm text-gray-600"><ChevronLeft size={16}/></button>
+        <span className="font-bold text-sm text-[#0d3276]">Favourite Places</span>
+        <button onClick={() => showToast('Adding new location...')} className="w-8 h-8 rounded-full bg-[#0d3276] text-white flex items-center justify-center shadow-sm"><Plus size={14}/></button>
+      </div>
+      <div className="bg-blue-50/50 border border-blue-100 rounded-3xl p-4 my-4 flex items-center space-x-3.5">
+        <div className="w-9 h-9 bg-[#0d3276]/10 rounded-full flex items-center justify-center text-[#0d3276]"><Heart size={16}/></div>
+        <div className="flex-1"><h4 className="text-xs font-bold text-[#0d3276]">One-Tap Quick Rides</h4><p className="text-[10px] text-gray-500">Press any registered location card to book instantly.</p></div>
+      </div>
+      <div className="flex-1 overflow-y-auto space-y-3">
+        {[
+          { icon: Briefcase, color: 'text-emerald-500', bg: 'bg-emerald-50', title: 'Main Office Headquarter', sub: '7 Spring Gardens, London, UK' },
+          { icon: Home, color: 'text-[#0d3276]', bg: 'bg-blue-50', title: 'Home Base Residence', sub: 'Liverpool Street, London EC2M' }
+        ].map((item, i) => (
+          <div key={i} className="bg-white border border-gray-100 rounded-2xl p-3.5 flex items-center justify-between shadow-sm">
+            <div className="flex items-center space-x-3 overflow-hidden">
+              <div className={`w-8 h-8 rounded-xl ${item.bg} ${item.color} flex items-center justify-center`}><item.icon size={14}/></div>
+              <div className="overflow-hidden"><div className="text-xs font-bold text-gray-800">{item.title}</div><div className="text-[10px] text-gray-400 truncate">{item.sub}</div></div>
+            </div>
+            <button onClick={() => handleSelectTerminal(item.title)} className="text-[10px] bg-[#0d3276] text-white px-2.5 py-1.5 rounded-lg font-bold">Go</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#121620] flex items-center justify-center p-4">
+      {/* Device Mockup Wrapper */}
+      <div className="w-full max-w-[375px] h-[812px] bg-black rounded-[50px] p-3.5 border-4 border-gray-800 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5),0_0_40px_rgba(118,188,33,0.15)] relative overflow-hidden flex flex-col font-sans">
+        <div className="w-full h-full bg-[#f8fafc] rounded-[36px] overflow-hidden relative flex flex-col">
+          
+          {/* iOS Status Bar */}
+          <div className="absolute top-0 inset-x-0 h-10 bg-transparent z-50 flex items-center justify-between px-6 pointer-events-none">
+             <span className={`text-xs font-semibold ${currentScreen === 'onboarding' ? 'text-white' : 'text-gray-800'}`}>10:45</span>
+             <div className="w-24 h-[18px] bg-black rounded-full mt-1"></div>
+             <div className={`flex items-center space-x-1.5 text-xs ${currentScreen === 'onboarding' ? 'text-white' : 'text-gray-800'}`}>
+               <span className="font-bold text-[10px]">100%</span>
+             </div>
+          </div>
+          
+          {/* Active Screen Router */}
+          {currentScreen === 'onboarding' && renderOnboarding()}
+          {currentScreen === 'login' && renderLogin()}
+          {currentScreen === 'register' && renderRegister()}
+          {currentScreen === 'map' && renderMap()}
+          {currentScreen === 'search' && renderSearch()}
+          {currentScreen === 'recent' && renderSearch()}
+          {currentScreen === 'vehicles' && renderVehicles()}
+          {currentScreen === 'confirm' && renderConfirm()}
+          {currentScreen === 'tracking' && renderTracking()}
+          {currentScreen === 'profile' && renderProfile()}
+          {currentScreen === 'favorites' && renderFavorites()}
+
+          {/* Toast Notification */}
+          <div className={`absolute bottom-8 left-1/2 -translate-x-1/2 bg-[#0d3276] text-white text-xs px-4 py-2.5 rounded-full shadow-lg z-[60] transform transition-all duration-300 pointer-events-none flex items-center space-x-2 border border-white/10 ${toast.show ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+              <CheckCircle2 size={14} className="text-[#76bc21]" />
+              <span className="font-bold whitespace-nowrap">{toast.message}</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
